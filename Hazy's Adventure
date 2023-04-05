@@ -1,0 +1,825 @@
+using System;
+
+class DaGame
+{
+    static void Main(string[] args)
+    {
+        Console.WriteLine("Welcome to Hazy's Adventure!");
+
+        // Create player character
+        Character player = CreateCharacter();
+
+        // Create enemies
+        Enemy[] enemies = new Enemy[22];
+
+        // World 1 enemies
+
+        enemies[0] = new Enemy("Goblin", 15, 15, 10, 10, false);
+        enemies[1] = new Enemy("Orc", 25, 25, 15, 15, false);
+        enemies[2] = new Enemy("Dragon", 30, 30, 25, 25, false);
+
+        // World 1 boss
+
+        enemies[3] = new Boss("Chupacabra", 72, 72, 30, 30, true);
+
+        // World 2 Enemies
+
+        enemies[4] = new Enemy("Manticore", 50, 50, 35, 35, false);
+        enemies[5] = new Enemy("Vampire", 55, 55, 35, 35, false);
+        enemies[6] = new Enemy("Bat", 40, 40, 35, 35, false);
+        enemies[7] = new Enemy("Ghoul", 35, 35, 35, 35, false);
+        enemies[8] = new Enemy("Giant Rat", 40, 40, 35, 35, false);
+
+        // World 2 boss
+
+        enemies[9] = new Boss("Baron Haze, the dank", 100, 100, 45, 45, true);
+
+        // World 3 Enemies
+        enemies[10] = new Enemy("Mummy", 45, 45, 40, 40, false);
+        enemies[11] = new Enemy("Wraith", 60, 60, 45, 45, false);
+        enemies[12] = new Enemy("Unholy Priest", 35, 35, 35, 25, false);
+        enemies[13] = new Enemy("Specter", 55, 55, 40, 40, false);
+        enemies[14] = new Enemy("Ghost", 45, 45, 45, 45, false);
+
+        // World 3 boss
+        enemies[15] = new Boss("Bloody Death Knight", 140, 140, 65, 65, true);
+
+        // World 4 enemies
+        enemies[16] = new Enemy("Minotaur", 80, 80, 55, 60, false);
+        enemies[17] = new Enemy("Chimaera", 82, 82, 48, 48, false);
+        enemies[18] = new Enemy("Hydra", 100, 100, 60, 72, false);
+        enemies[19] = new Enemy("Blood Dragon", 100, 100, 68, 72, false);
+        enemies[20] = new Enemy("Demon Summoner", 80, 80, 60, 60, false);
+
+        // World 4 boss
+        enemies[21] = new Boss("Rishnok the Demon Lord", 220, 220, 70, 85, true);
+}
+
+    static Character CreateCharacter()
+    {
+        // Create a new character
+        Character character = new Character("Player", 100, 100, 16, 16);
+
+        // Give the character some equipment
+        character.EquipWeapon(new Weapon("Copper Sword", 4));
+        character.EquipArmor(new Armor("Fine Tunic", 2));
+
+        return character;
+    }
+
+class Character
+{
+    public string Name {
+
+        // Play the game
+        bool gameOver = false;
+        int currentEnemyIndex = 0;
+        while (!gameOver)
+        {
+            // Display player and enemy status
+            Console.WriteLine(player.GetName() + ": " + player.GetCurrentHealth() + "/" + player.GetMaxHealth() + " HP, " + player.GetStamina() + " stamina");
+            Console.WriteLine(enemies[currentEnemyIndex].GetName() + ": " + enemies[currentEnemyIndex].GetCurrentHealth() + "/" + enemies[currentEnemyIndex].GetMaxHealth() + " HP");
+
+            // Player turn
+            bool turnOver = false;
+            while (!turnOver)
+            {
+                Console.WriteLine("Choose an action:");
+                Console.WriteLine("1. Attack");
+                Console.WriteLine("2. Use item");
+                Console.WriteLine("3. View status");
+                Console.WriteLine("4. Run away");
+
+                string input = Console.ReadLine();
+                switch (input)
+                {
+                    case "1":
+                        player.UseAbility1(enemies[currentEnemyIndex]);
+                        turnOver = true;
+                        break;
+                    case "2":
+                        UseItem(player);
+                        break;
+                    case "3":
+                        Console.WriteLine(player.GetName() + ":");
+                        Console.WriteLine("Level: " + player.GetLevel());
+                        Console.WriteLine("Strength: " + player.GetStrength());
+                        Console.WriteLine("Dexterity: " + player.GetDexterity());
+                        Console.WriteLine("Endurance: " + player.GetEndurance());
+                        Console.WriteLine("Intelligence: " + player.GetIntelligence());
+                        Console.WriteLine("Stamina: " + player.GetStamina());
+                        Console.WriteLine("Experience: " + player.GetExperience() + "/" + player.GetExperienceToNextLevel());
+                        Console.WriteLine("");
+                        break;
+                    case "4":
+                        Console.WriteLine("You ran away!");
+                        gameOver = true;
+                        turnOver = true;
+                        break;
+                    default:
+                        Console.WriteLine("Invalid input!");
+                        break;
+                }
+            }
+
+            // Check if enemy is defeated
+            if (enemies[currentEnemyIndex].GetCurrentHealth() == 0)
+            {
+                Console.WriteLine(enemies[currentEnemyIndex].GetName() + " has been defeated!");
+                player.GainExperience(enemies[currentEnemyIndex].GetExperience());
+                currentEnemyIndex++;
+                if (currentEnemyIndex == enemies.Length)
+                {
+                    Console.WriteLine("You have defeated all the enemies!");
+                    gameOver = true;
+                }
+                else
+                {
+                    Console.WriteLine("You have encountered a new enemy!");
+                }
+            }
+
+            // Enemy turn
+            if (!gameOver)
+            {
+                enemies[currentEnemyIndex].UseAbility1(player);
+                if (player.GetCurrentHealth() == 0)
+                {
+                    Console.WriteLine("You have been defeated!");
+                    gameOver = true;
+                }
+            }
+
+            // Regenerate stamina
+            player.RegenerateStamina();
+        }
+
+        Console.WriteLine("Game over!");
+    }
+
+    static Character CreateCharacter()
+    {
+        Console.WriteLine("Choose a class:");
+        Console.WriteLine("1. Druid");
+        Console.WriteLine("2. Warrior");
+        Console.WriteLine("3. Rogue");
+        Console.WriteLine("4. Mage");
+        Console.WriteLine("5. Priest");
+
+        string input = Console.ReadLine();
+        switch (input)
+        {
+            case "1":
+                return new Druid("Druid", 30, 30, 10, 20, 100);
+            case "2":
+                return new Warrior("Warrior", 30, 30, 22, 20, 100);
+            case "3":
+                return new Rogue("Rogue", 30, 30, 20, 20, 100);
+            case "4":
+                return new Mage("Mage", 25, 25, 20, 15, 100);
+            case "5":
+                return new Priest("Priest", 25, 25, 10, 15, 100);
+            default:
+                Console.WriteLine("Invalid input, creating default character...");
+                return new Character("Default", 30, 30, 15, 15, 100);
+        }
+    }
+
+    static void UseItem(Character character)
+    {
+        Console.WriteLine("Choose an item to use:");
+        Console.WriteLine("1. Health potion (+50 HP)");
+        Console.WriteLine("2. Stamina potion (+50 stamina)");
+
+        string input = Console.ReadLine();
+        switch (input)
+        {
+            case "1":
+                character.UseHealthPotion();
+                break;
+            case "2":
+                character.UseStaminaPotion();
+                break;
+            default:
+                Console.WriteLine("Invalid input!");
+                break;
+        }
+    }
+}
+public class Character {
+    public int level;
+    public int experience;
+    public int experienceToNextLevel;
+    public int maxHealth;
+    public int currentHealth;
+    public int maxStamina;
+    public int currentStamina;
+    public int strength;
+    public int dexterity;
+    public int endurance;
+    public int intelligence;
+    public CharacterClass characterClass;
+
+    public Character(CharacterClass characterClass) {
+        this.characterClass = characterClass;
+        this.level = 1;
+        this.experience = 0;
+        this.experienceToNextLevel = 100;
+        this.maxHealth = 10;
+        this.currentHealth = 10;
+        this.maxStamina = 10;
+        this.currentStamina = 10;
+        this.strength = 5;
+        this.dexterity = 5;
+        this.endurance = 5;
+        this.intelligence = 5;
+    }
+
+    public void LevelUp() {
+        this.level++;
+        this.experienceToNextLevel = (int)(this.experienceToNextLevel * 1.075);
+
+        switch (this.characterClass) {
+            case CharacterClass."Druid":
+                this.maxHealth += 5;
+                this.maxStamina += 5;
+                this.strength += 1;
+                this.dexterity += 1;
+                this.endurance += 1;
+                this.intelligence += 2;
+                break;
+
+            case CharacterClass."Warrior":
+                this.maxHealth += 5;
+                this.maxStamina += 4;
+                this.strength += 2;
+                this.dexterity += 1;
+                this.endurance += 1;
+                this.intelligence += 1;
+                break;
+
+            case CharacterClass."Rogue":
+                this.maxHealth += 5;
+                this.maxStamina += 4;
+                this.strength += 1;
+                this.dexterity += 2;
+                this.endurance += 1;
+                this.intelligence += 1;
+                break;
+
+            case CharacterClass."Mage":
+                this.maxHealth += 5;
+                this.maxStamina += 4;
+                this.strength += 1;
+                this.dexterity += 1;
+                this.endurance += 1;
+                this.intelligence += 2;
+                break;
+
+            case CharacterClass."Priest":
+                this.maxHealth += 5;
+                this.maxStamina += 4;
+                this.strength += 1;
+                this.dexterity += 1;
+                this.endurance += 2;
+                this.intelligence += 1;
+                break;
+
+            default:
+                throw new Exception("Invalid character class.");
+        }
+
+        this.currentHealth = this.maxHealth;
+        this.currentStamina = this.maxStamina;
+
+        Console.WriteLine("Congratulations! You have reached level " + this.level + ".");
+    }
+}
+
+    // Methods
+    public string GetName()
+    {
+        return name;
+    }
+
+    public int GetLevel()
+    {
+        return level;
+    }
+
+    public int GetStrength()
+    {
+        return strength;
+    }
+
+    public int GetDexterity()
+    {
+        return dexterity;
+    }
+
+    public int GetEndurance()
+    {
+        return endurance;
+    }
+
+    public int GetIntelligence()
+    {
+        return intelligence;
+    }
+
+    public int GetMaxHealth()
+    {
+        return maxHealth;
+    }
+
+    public int GetCurrentHealth()
+    {
+        return currentHealth;
+    }
+
+    public int GetMaxStamina()
+    {
+        return maxStamina;
+    }
+
+    public int GetStamina()
+    {
+        return currentStamina;
+    }
+
+    public int GetExperience()
+    {
+        return experience;
+    }
+
+    public int GetExperienceToNextLevel()
+    {
+        return experienceToNextLevel;
+    }
+
+    public void UseAbility1(Character target)
+    {
+        currentStamina -= 20;
+        Console.WriteLine(name + " uses Ability 1 on " + target.GetName() + "!");
+        int damage = strength
+        Console.WriteLine("Choose an ability:");
+        Console.WriteLine("1. Ability 1 (20 stamina)");
+        Console.WriteLine("2. Ability 2 (30 stamina)");
+        Console.WriteLine("3. Ability 3 (40 stamina)");
+        Console.WriteLine("4. Ability 4 (50 stamina)");
+
+        string input = Console.ReadLine();
+        switch (input)
+        {
+            case "1":
+                currentStamina -= 20;
+                Console.WriteLine(name + " uses Ability 1 on " + target.GetName() + "!");
+                int damage = strength + 10;
+                target.TakeDamage(damage);
+                break;
+            case "2":
+                currentStamina -= 30;
+                Console.WriteLine(name + " uses Ability 2 on " + target.GetName() + "!");
+                int damage2 = strength + 20;
+                target.TakeDamage(damage2);
+                break;
+            case "3":
+                currentStamina -= 40;
+                Console.WriteLine(name + " uses Ability 3 on " + target.GetName() + "!");
+                int damage3 = strength + 30;
+                target.TakeDamage(damage3);
+                break;
+            case "4":
+                currentStamina -= 50;
+                Console.WriteLine(name + " uses Ability 4 on " + target.GetName() + "!");
+                int damage4 = strength + 40;
+                target.TakeDamage(damage4);
+                break;
+            default:
+                Console.WriteLine("Invalid input!");
+                break;
+        }
+    }
+
+    public void TakeDamage(int damage)
+    {
+        currentHealth -= damage;
+        Console.WriteLine(name + " takes " + damage + " damage!");
+        if (currentHealth <= 0)
+        {
+            currentHealth = 0;
+            Console.WriteLine(name + " has been defeated!");
+        }
+    }
+
+    public void UseHealthPotion()
+    {
+        if (currentHealth == maxHealth)
+        {
+            Console.WriteLine("You are already at full health!");
+            return;
+        }
+        currentHealth += 50;
+        if (currentHealth > maxHealth)
+        {
+            currentHealth = maxHealth;
+        }
+        Console.WriteLine(name + " uses a health potion and restores 50 HP!");
+    }
+
+    public void UseStaminaPotion()
+    {
+        if (currentStamina == maxStamina)
+        {
+            Console.WriteLine("You already have full stamina!");
+            return;
+        }
+        currentStamina += 50;
+        if (currentStamina > maxStamina)
+        {
+            currentStamina = maxStamina;
+        }
+        Console.WriteLine(name + " uses a stamina potion and restores 50 stamina!");
+    }
+
+    public void GainExperience(int amount)
+    {
+        experience += amount;
+        Console.WriteLine(name + " gains " + amount + " experience!");
+        if (experience >= experienceToNextLevel)
+        {
+            LevelUp();
+        }
+    }
+
+    public void LevelUp()
+    {
+        level++;
+        Console.WriteLine(name + " levels up to level " + level + "!");
+        strength += 2;
+        dexterity += 2;
+        endurance += 2;
+        intelligence += 2;
+        maxHealth += 10;
+        currentHealth = maxHealth;
+        maxStamina += 10;
+        currentStamina = maxStamina;
+        experience -= experienceToNextLevel;
+        experienceToNextLevel += 50;
+    }
+}
+
+class Druid : Character
+{
+    public Druid(string name, int strength, int dexterity, int endurance, int intelligence, int maxHealth) : base(name, strength, dexterity, endurance, intelligence, maxHealth)
+    {
+    this.ability1Name = "Nature's Wrath";
+    this.ability2Name = "Bestial Fury";
+    this.ability3Name = "Birds of Yor";
+    this.ability4Name = "Nature's Touch";
+    }
+
+    public void Ability5(Character target)
+    {
+        currentStamina -= 30;
+        Console
+        Console.WriteLine(name + " uses Nature's Wrath on " + target.GetName() + "!");
+        int damage = strength + 20;
+        target.TakeDamage(damage);
+    }
+
+    public void Ability6(Character target)
+    {
+        currentStamina -= 40;
+        Console.WriteLine(name + " uses Bestial Fury on " + target.GetName() + "!");
+        int damage = strength + 30;
+        target.TakeDamage(damage);
+    }
+
+    public void Ability7(Character target)
+    {
+        currentStamina -= 50;
+        Console.WriteLine(name + " uses Birds of Yor on " + target.GetName() + "!");
+        int damage = strength + 40;
+        target.TakeDamage(damage);
+    }
+
+
+    // Ability 4: Nature's Touch - heals the target character by a fixed amount
+    public void Nature's_Touch(Character target)
+    {
+        int healAmount = 33; // You can adjust this value as needed
+        if (this.currentStamina >= 10)
+        {
+            Console.WriteLine(this.name + " casts Nature's Touch on " + target.GetName() + " and heals them for " + healAmount + " health.");
+            target.Heal(healAmount);
+            this.currentStamina -= 10;
+        }
+        else
+        {
+            Console.WriteLine("Not enough stamina to use Nature's Touch!");
+        }
+    }
+}
+
+class Warrior : Character
+{
+    public Warrior(string name, int strength, int dexterity, int endurance, int intelligence, int maxHealth) : base(name, strength, dexterity, endurance, intelligence, maxHealth)
+    {
+    this.ability1Name = "Sword Strike";
+    this.ability2Name = "Shield Bash";
+    this.ability3Name = "Rage";
+    this.ability4Name = "Whirlwind";
+    }
+
+    public void Ability5(Character target)
+    {
+        currentStamina -= 30;
+        Console.WriteLine(name + " uses Sword Strike on " + target.GetName() + "!");
+        int damage = strength + 20;
+        target.TakeDamage(damage);
+    }
+
+    public void Ability6(Character target)
+    {
+        currentStamina -= 40;
+        Console.WriteLine(name + " uses Shield Bash on " + target.GetName() + "!");
+        int damage = strength + 30;
+        target.TakeDamage(damage);
+    }
+
+    public void Ability7(Character target)
+    {
+        currentStamina -= 50;
+        Console.WriteLine(name + " uses Rage on " + target.GetName() + "!");
+        int damage = strength + 40;
+        target.TakeDamage(damage);
+    }
+
+    public void Ability8(Character target)
+    {
+        currentStamina -= 60;
+        Console.WriteLine(name + " uses Whirlwind on " + target.GetName() + "!");
+        int damage = strength + 50;
+        target.TakeDamage(damage);
+    }
+}
+
+class Rogue : Character
+{
+    public Rogue(string name, int strength, int dexterity, int endurance, int intelligence, int maxHealth) : base(name, strength, dexterity, endurance, intelligence, maxHealth)
+    {
+    this.ability1Name = "Backstab";
+    this.ability2Name = "Poison Dagger";
+    this.ability3Name = "Evasion";
+    this.ability4Name = "Shadowstep";
+    }
+
+    public void Ability5(Character target)
+    {
+        currentStamina -= 30;
+        Console.WriteLine(name + " uses Backstab on " + target.GetName() + "!");
+        int damage = strength + 20;
+        target.TakeDamage(damage);
+    }
+
+    public void Ability6(Character target)
+    {
+        currentStamina -= 40;
+        Console.WriteLine(name + " uses Poison Dagger on " + target.GetName() + "!");
+        int damage = strength + 30;
+        target.TakeDamage(damage);
+    }
+
+    public void Ability7(Character target)
+    {
+        currentStamina -= 50;
+        Console.WriteLine(name + " uses Evasion on " + target.GetName() + "!");
+        int damage = strength + 40;
+        target.TakeDamage(damage);
+    }
+
+    public void Ability8(Character target)
+    {
+        currentStamina -= 60;
+        Console.WriteLine(name + " uses Shadowstep on " + target.GetName() + "!");
+        int damage = strength + 50;
+        target.TakeDamage(damage);
+    }
+}
+
+class Mage : Character
+{
+    public Mage(string name,
+class Mage : Character
+{
+    public Mage(string name, int strength, int dexterity, int endurance, int intelligence, int maxHealth) : base(name, strength, dexterity, endurance, intelligence, maxHealth)
+    {
+    this.ability1Name = "Frostbolt";
+    this.ability2Name = "Fireball";
+    this.ability3Name = "Raging Volcano";
+    this.ability4Name = "Cold winds";
+    }
+
+    public void Ability5(Character target)
+    {
+        currentStamina -= 30;
+        Console.WriteLine(name + " uses Frostbolt on " + target.GetName() + "!");
+        int damage = intelligence + 20;
+        target.TakeDamage(damage);
+    }
+
+    public void Ability6(Character target)
+    {
+        currentStamina -= 40;
+        Console.WriteLine(name + " uses Fireball on " + target.GetName() + "!");
+        int damage = intelligence + 30;
+        target.TakeDamage(damage);
+    }
+
+    public void Ability7(Character target)
+    {
+        currentStamina -= 50;
+        Console.WriteLine(name + " uses Raging Volcano on " + target.GetName() + "!");
+        int damage = intelligence + 40;
+        target.TakeDamage(damage);
+    }
+
+    public void Ability8(Character target)
+    {
+        currentStamina -= 60;
+        Console.WriteLine(name + " uses Cold Winds on " + target.GetName() + "!");
+        int damage = intelligence + 50;
+        target.TakeDamage(damage);
+    }
+}
+
+class Priest : Character
+{
+    public Priest(string name, int strength, int dexterity, int endurance, int intelligence, int maxHealth) : base(name, strength, dexterity, endurance, intelligence, maxHealth)
+    {
+    this.ability1Name = "Holy Smite";
+    this.ability2Name = "Holy Fire";
+    this.ability3Name = "Divine Blessing";
+    this.ability4Name = "Holy word: Intervene";
+    }
+
+    public void Ability5(Character target)
+    {
+        currentStamina -= 30;
+        Console.WriteLine(name + " uses Holy Smite on " + target.GetName() + "!");
+        int damage = intelligence + 20;
+        target.TakeDamage(damage);
+    }
+
+    public void Ability6(Character target)
+    {
+        currentStamina -= 40;
+        Console.WriteLine(name + " uses Holy Fire on " + target.GetName() + "!");
+        int damage = intelligence + 30;
+        target.TakeDamage(damage);
+    }
+    // Ability 3: Blessing - heals the target character by a fixed amount
+    public void Blessing(Character target)
+    {
+        int healAmount = 20; // You can adjust this value as needed
+        if (this.currentStamina >= 10)
+        {
+            Console.WriteLine(this.name + " casts Divine Blessing on " + target.GetName() + " and heals them for " + healAmount + " health.");
+            target.Heal(healAmount);
+            this.currentStamina -= 10;
+        }
+        else
+        {
+            Console.WriteLine("Not enough stamina to use Blessing!");
+        }
+    }
+}
+    }
+
+    public void Ability8(Character target)
+    {
+        currentStamina -= 60;
+        Console.WriteLine(name + " uses Holy Word Intervene on " + target.GetName() + "!");
+        int damage = intelligence + 50;
+        target.TakeDamage(damage);
+    }
+
+
+class Item
+{
+    public string name;
+    public string description;
+    public int bonusStrength;
+    public int bonusDexterity;
+    public int bonusEndurance;
+    public int bonusIntelligence;
+    public int bonusMaxHealth;
+
+    public Item(string name, string description, int bonusStrength, int bonusDexterity, int bonusEndurance, int bonusIntelligence, int bonusMaxHealth)
+    {
+        this.name = name;
+        this.description = description;
+        this.bonusStrength = bonusStrength;
+        this.bonusDexterity = bonusDexterity;
+        this.bonusEndurance = bonusEndurance;
+        this.bonusIntelligence = bonusIntelligence;
+        this.bonusMaxHealth = bonusMaxHealth;
+    }
+
+    public void ApplyBonus(Character character)
+    {
+        character.strength += bonusStrength;
+        character.dexterity += bonusDexterity;
+        character.endurance += bonusEndurance;
+        character.intelligence += bonusIntelligence;
+        character.maxHealth += bonusMaxHealth;
+    }
+}
+
+class Program
+{
+    static void Main
+    static void Main(string[] args)
+    {
+        // Create a new warrior with initial stats and max health of 100
+        Warrior player = new Warrior("Player", 10, 10, 10, 10, 100);
+        // Create a new druid with initial stats and max health of 80
+        Druid enemy = new Druid("Enemy", 8, 12, 8, 12, 80);
+
+        // Create some items
+        Item sword = new Item("Sword", "A sharp blade", 5, 0, 0, 0, 0);
+        Item shield = new Item("Shield", "A sturdy defense", 0, 5, 10, 0, 0);
+        Item wand = new Item("Wand", "A magical instrument", 0, 0, 0, 10, 0);
+
+        // Apply the items to the player character
+        sword.ApplyBonus(player);
+        shield.ApplyBonus(player);
+        wand.ApplyBonus(player);
+
+        Console.WriteLine(player.GetName() + " has equipped the following items:");
+        Console.WriteLine("- " + sword.name);
+        Console.WriteLine("- " + shield.name);
+        Console.WriteLine("- " + wand.name);
+
+        Console.WriteLine();
+        Console.WriteLine("Battle begins!");
+
+        // Loop until either the player or the enemy dies
+        while (player.GetCurrentHealth() > 0 && enemy.GetCurrentHealth() > 0)
+        {
+            // Player turn
+            Console.WriteLine();
+            Console.WriteLine(player.GetName() + "'s turn:");
+            player.PrintStats();
+            Console.WriteLine("1. Ability 1");
+            Console.WriteLine("2. Ability 2");
+            Console.WriteLine("3. Ability 3");
+            Console.WriteLine("4. Ability 4");
+
+            Console.Write("Choose an action (1-4): ");
+            int action = int.Parse(Console.ReadLine());
+
+            switch (action)
+            {
+                case 1:
+                    player.Ability1(enemy);
+                    break;
+                case 2:
+                    player.Ability2(enemy);
+                    break;
+                case 3:
+                    player.Ability3(enemy);
+                    break;
+                case 4:
+                    player.Ability4(enemy);
+                    break;
+                default:
+                    Console.WriteLine("Invalid action");
+                    break;
+            }
+
+            // Enemy turn
+            Console.WriteLine();
+            Console.WriteLine(enemy.GetName() + "'s turn:");
+            enemy.PrintStats();
+            enemy.Ability1(player);
+
+            // Regenerate stamina for both characters
+            player.RegenerateStamina();
+            enemy.RegenerateStamina();
+        }
+
+        // Print the winner
+        if (player.GetCurrentHealth() > 0)
+        {
+            Console.WriteLine(player.GetName() + " wins!");
+        }
+        else
+        {
+            Console.WriteLine(enemy.GetName() + " wins!");
+        }
+
+        Console.ReadLine();
+    }
+}
