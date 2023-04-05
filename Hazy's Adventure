@@ -1,4 +1,6 @@
         // Startup of the App :) 
+        //CHP = Current health points
+        //MHP = Max health points
 using System;
 
 class HazysAdventure
@@ -10,7 +12,8 @@ class HazysAdventure
         // Create player character
         Character player = CreateCharacter();
 
-        // Create enemies Including values such as [Current Hp, Max Hp, AP, Defense, IF BOSS]
+        // Create enemies Including values such as [CHP, MHP, AP, Def, IF BOSS]
+        //Maybe add stamina for enemies but dunno yet
         Enemy[] enemies = new Enemy[22];
 
         // World 1 enemies
@@ -55,10 +58,10 @@ class HazysAdventure
         // World 4 boss
         enemies[21] = new Boss("Rishnok the Demon Lord", 220, 220, 70, 85, true);
 }
-        // Character Creation Including values as in order [Current Hp, Max Hp, AP, Defense, Stamina]
+        // Character Creation Including values as in order [CHP, MHP, AP, Defense, Stamina]
     static Character CreateCharacter()
     {
-        // Class selection and default stats [Current Hp, Max HP, AP, Defense, Stamina]
+        // Class selection and default stats [CHP, MHP, AP, Defense, Stamina]
     static Character CreateCharacter()
     {
         Console.WriteLine("Choose a class:");
@@ -68,6 +71,7 @@ class HazysAdventure
         Console.WriteLine("4. Mage");
         Console.WriteLine("5. Priest");
 
+        //Values displayed as [CHP,MHP,AP,Def,Stam]
         string input = Console.ReadLine();
         switch (input)
         {
@@ -81,9 +85,6 @@ class HazysAdventure
                 return new Mage("Mage", 25, 25, 20, 15, 100);
             case "5":
                 return new Priest("Priest", 25, 25, 10, 15, 100);
-            default:
-                Console.WriteLine("Invalid input, creating default character...");
-                return new Character("Default", 30, 30, 15, 15, 100);
         }
     }
         // Give the character some equipment
