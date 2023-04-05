@@ -1,6 +1,7 @@
+        // Startup of the App :) 
 using System;
 
-class DaGame
+class HazysAdventure
 {
     static void Main(string[] args)
     {
@@ -9,7 +10,7 @@ class DaGame
         // Create player character
         Character player = CreateCharacter();
 
-        // Create enemies
+        // Create enemies Including values such as [Current Hp, Max Hp, AP, Defense, IF BOSS]
         Enemy[] enemies = new Enemy[22];
 
         // World 1 enemies
@@ -54,7 +55,7 @@ class DaGame
         // World 4 boss
         enemies[21] = new Boss("Rishnok the Demon Lord", 220, 220, 70, 85, true);
 }
-
+        // Character Creation Including values as in order [Current Hp, Max Hp, AP, Defense]
     static Character CreateCharacter()
     {
         // Create a new character
@@ -66,7 +67,7 @@ class DaGame
 
         return character;
     }
-
+        // Logic and Functionality 
 class Character
 {
     public string Name {
@@ -76,11 +77,13 @@ class Character
         int currentEnemyIndex = 0;
         while (!gameOver)
         {
-            // Display player and enemy status
+            // Display player and enemy status, Health and Stamina
+                // TODO add debuffs and buffs
             Console.WriteLine(player.GetName() + ": " + player.GetCurrentHealth() + "/" + player.GetMaxHealth() + " HP, " + player.GetStamina() + " stamina");
             Console.WriteLine(enemies[currentEnemyIndex].GetName() + ": " + enemies[currentEnemyIndex].GetCurrentHealth() + "/" + enemies[currentEnemyIndex].GetMaxHealth() + " HP");
 
-            // Player turn
+            // Player's turn with 4 options on what to do 
+                //TODO Inventory and inventory display while selecting items 
             bool turnOver = false;
             while (!turnOver)
             {
@@ -139,7 +142,7 @@ class Character
                 }
             }
 
-            // Enemy turn
+            // Enemy turn while checking if player health = 0, if not regen stam 
             if (!gameOver)
             {
                 enemies[currentEnemyIndex].UseAbility1(player);
@@ -156,7 +159,7 @@ class Character
 
         Console.WriteLine("Game over!");
     }
-
+        // Class selection and default stats [Current Hp, Max HP, AP, Defense, Stamina]
     static Character CreateCharacter()
     {
         Console.WriteLine("Choose a class:");
@@ -184,7 +187,8 @@ class Character
                 return new Character("Default", 30, 30, 15, 15, 100);
         }
     }
-
+        //Item selections
+        //TODO add more stuffs
     static void UseItem(Character character)
     {
         Console.WriteLine("Choose an item to use:");
@@ -206,6 +210,7 @@ class Character
         }
     }
 }
+        // Stats 
 public class Character {
     public int level;
     public int experience;
@@ -225,16 +230,16 @@ public class Character {
         this.level = 1;
         this.experience = 0;
         this.experienceToNextLevel = 100;
-        this.maxHealth = 10;
-        this.currentHealth = 10;
-        this.maxStamina = 10;
-        this.currentStamina = 10;
+        this.maxHealth = 30;
+        this.currentHealth = 30;
+        this.maxStamina = 50;
+        this.currentStamina = 50;
         this.strength = 5;
         this.dexterity = 5;
         this.endurance = 5;
         this.intelligence = 5;
     }
-
+        //Stats on levelup varying by class 
     public void LevelUp() {
         this.level++;
         this.experienceToNextLevel = (int)(this.experienceToNextLevel * 1.075);
@@ -244,7 +249,7 @@ public class Character {
                 this.maxHealth += 5;
                 this.maxStamina += 5;
                 this.strength += 1;
-                this.dexterity += 1;
+                this.dexterity += 2;
                 this.endurance += 1;
                 this.intelligence += 2;
                 break;
@@ -252,7 +257,7 @@ public class Character {
             case CharacterClass."Warrior":
                 this.maxHealth += 5;
                 this.maxStamina += 4;
-                this.strength += 2;
+                this.strength += 3;
                 this.dexterity += 1;
                 this.endurance += 1;
                 this.intelligence += 1;
@@ -261,7 +266,7 @@ public class Character {
             case CharacterClass."Rogue":
                 this.maxHealth += 5;
                 this.maxStamina += 4;
-                this.strength += 1;
+                this.strength += 2;
                 this.dexterity += 2;
                 this.endurance += 1;
                 this.intelligence += 1;
@@ -295,7 +300,7 @@ public class Character {
         Console.WriteLine("Congratulations! You have reached level " + this.level + ".");
     }
 }
-
+        //Display the characters stats
     // Methods
     public string GetName()
     {
@@ -363,44 +368,12 @@ public class Character {
         Console.WriteLine(name + " uses Ability 1 on " + target.GetName() + "!");
         int damage = strength
         Console.WriteLine("Choose an ability:");
-        Console.WriteLine("1. Ability 1 (20 stamina)");
-        Console.WriteLine("2. Ability 2 (30 stamina)");
-        Console.WriteLine("3. Ability 3 (40 stamina)");
-        Console.WriteLine("4. Ability 4 (50 stamina)");
+        Console.WriteLine("1. Ability 1 (30 stamina)");
+        Console.WriteLine("2. Ability 2 (40 stamina)");
+        Console.WriteLine("3. Ability 3 (50 stamina)");
+        Console.WriteLine("4. Ability 4 (60 stamina)");
 
-        string input = Console.ReadLine();
-        switch (input)
-        {
-            case "1":
-                currentStamina -= 20;
-                Console.WriteLine(name + " uses Ability 1 on " + target.GetName() + "!");
-                int damage = strength + 10;
-                target.TakeDamage(damage);
-                break;
-            case "2":
-                currentStamina -= 30;
-                Console.WriteLine(name + " uses Ability 2 on " + target.GetName() + "!");
-                int damage2 = strength + 20;
-                target.TakeDamage(damage2);
-                break;
-            case "3":
-                currentStamina -= 40;
-                Console.WriteLine(name + " uses Ability 3 on " + target.GetName() + "!");
-                int damage3 = strength + 30;
-                target.TakeDamage(damage3);
-                break;
-            case "4":
-                currentStamina -= 50;
-                Console.WriteLine(name + " uses Ability 4 on " + target.GetName() + "!");
-                int damage4 = strength + 40;
-                target.TakeDamage(damage4);
-                break;
-            default:
-                Console.WriteLine("Invalid input!");
-                break;
-        }
-    }
-
+        //Damage taken player or mob. 
     public void TakeDamage(int damage)
     {
         currentHealth -= damage;
@@ -411,7 +384,7 @@ public class Character {
             Console.WriteLine(name + " has been defeated!");
         }
     }
-
+        //Status display for gaining resources or Xp. 
     public void UseHealthPotion()
     {
         if (currentHealth == maxHealth)
@@ -451,23 +424,7 @@ public class Character {
             LevelUp();
         }
     }
-
-    public void LevelUp()
-    {
-        level++;
-        Console.WriteLine(name + " levels up to level " + level + "!");
-        strength += 2;
-        dexterity += 2;
-        endurance += 2;
-        intelligence += 2;
-        maxHealth += 10;
-        currentHealth = maxHealth;
-        maxStamina += 10;
-        currentStamina = maxStamina;
-        experience -= experienceToNextLevel;
-        experienceToNextLevel += 50;
-    }
-}
+        //TODO needs more balance or i could just increase mob dmg/HP we'll see 
 
 class Druid : Character
 {
@@ -505,10 +462,10 @@ class Druid : Character
     }
 
 
-    // Ability 4: Nature's Touch - heals the target character by a fixed amount
+    // Ability 8: Nature's Touch - heals the target character by a fixed amount
     public void Nature's_Touch(Character target)
     {
-        int healAmount = 33; // You can adjust this value as needed
+        int healAmount = 33; // Adjustable value, TODO make it scale with int
         if (this.currentStamina >= 10)
         {
             Console.WriteLine(this.name + " casts Nature's Touch on " + target.GetName() + " and heals them for " + healAmount + " health.");
@@ -579,7 +536,7 @@ class Rogue : Character
     {
         currentStamina -= 30;
         Console.WriteLine(name + " uses Backstab on " + target.GetName() + "!");
-        int damage = strength + 20;
+        int damage = dexterity + 20;
         target.TakeDamage(damage);
     }
 
@@ -587,15 +544,16 @@ class Rogue : Character
     {
         currentStamina -= 40;
         Console.WriteLine(name + " uses Poison Dagger on " + target.GetName() + "!");
-        int damage = strength + 30;
+        int damage = dexterity + 30;
         target.TakeDamage(damage);
     }
 
     public void Ability7(Character target)
     {
+        //TODO make the rogue be able to dodge the next 2 attacks (only meele)
         currentStamina -= 50;
         Console.WriteLine(name + " uses Evasion on " + target.GetName() + "!");
-        int damage = strength + 40;
+        int damage = dexterity + 40;
         target.TakeDamage(damage);
     }
 
@@ -603,14 +561,11 @@ class Rogue : Character
     {
         currentStamina -= 60;
         Console.WriteLine(name + " uses Shadowstep on " + target.GetName() + "!");
-        int damage = strength + 50;
+        int damage = dexterity + 50;
         target.TakeDamage(damage);
     }
 }
 
-class Mage : Character
-{
-    public Mage(string name,
 class Mage : Character
 {
     public Mage(string name, int strength, int dexterity, int endurance, int intelligence, int maxHealth) : base(name, strength, dexterity, endurance, intelligence, maxHealth)
@@ -661,7 +616,7 @@ class Priest : Character
     this.ability1Name = "Holy Smite";
     this.ability2Name = "Holy Fire";
     this.ability3Name = "Divine Blessing";
-    this.ability4Name = "Holy word: Intervene";
+    this.ability4Name = "Reckoning";
     }
 
     public void Ability5(Character target)
@@ -700,12 +655,12 @@ class Priest : Character
     public void Ability8(Character target)
     {
         currentStamina -= 60;
-        Console.WriteLine(name + " uses Holy Word Intervene on " + target.GetName() + "!");
+        Console.WriteLine(name + " uses Reckoning on " + target.GetName() + "!");
         int damage = intelligence + 50;
         target.TakeDamage(damage);
     }
 
-
+        //Stat increases for items
 class Item
 {
     public string name;
@@ -736,21 +691,16 @@ class Item
         character.maxHealth += bonusMaxHealth;
     }
 }
-
-class Program
+class Item
 {
-    static void Main
-    static void Main(string[] args)
-    {
-        // Create a new warrior with initial stats and max health of 100
-        Warrior player = new Warrior("Player", 10, 10, 10, 10, 100);
-        // Create a new druid with initial stats and max health of 80
-        Druid enemy = new Druid("Enemy", 8, 12, 8, 12, 80);
 
-        // Create some items
-        Item sword = new Item("Sword", "A sharp blade", 5, 0, 0, 0, 0);
-        Item shield = new Item("Shield", "A sturdy defense", 0, 5, 10, 0, 0);
-        Item wand = new Item("Wand", "A magical instrument", 0, 0, 0, 10, 0);
+
+        // Create some items [Ap, defense, Current HP, Max Hp, Stamina]
+        //TODO add more items :) 
+        //Maybe delete the loop but keep battle begins msg
+        Item sword = new Item("Sword", "A sharp blade, gotta start somewhere", 5, 0, 0, 0, 0);
+        Item shield = new Item("Shield", "A sturdy defense, better than your bare hands", 0, 5, 10, 0, 0);
+        Item wand = new Item("Wand", "A magical instrument, highly flammable", 0, 0, 0, 10, 0);
 
         // Apply the items to the player character
         sword.ApplyBonus(player);
@@ -762,13 +712,14 @@ class Program
         Console.WriteLine("- " + shield.name);
         Console.WriteLine("- " + wand.name);
 
+
         Console.WriteLine();
         Console.WriteLine("Battle begins!");
 
         // Loop until either the player or the enemy dies
         while (player.GetCurrentHealth() > 0 && enemy.GetCurrentHealth() > 0)
         {
-            // Player turn
+            // Player turn, write info in textbos e.g. "player" used Shadowstep
             Console.WriteLine();
             Console.WriteLine(player.GetName() + "'s turn:");
             player.PrintStats();
