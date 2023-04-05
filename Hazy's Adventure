@@ -55,19 +55,45 @@ class HazysAdventure
         // World 4 boss
         enemies[21] = new Boss("Rishnok the Demon Lord", 220, 220, 70, 85, true);
 }
-        // Character Creation Including values as in order [Current Hp, Max Hp, AP, Defense]
+        // Character Creation Including values as in order [Current Hp, Max Hp, AP, Defense, Stamina]
     static Character CreateCharacter()
     {
-        // Create a new character
-        Character character = new Character("Player", 100, 100, 16, 16);
+        // Class selection and default stats [Current Hp, Max HP, AP, Defense, Stamina]
+    static Character CreateCharacter()
+    {
+        Console.WriteLine("Choose a class:");
+        Console.WriteLine("1. Druid");
+        Console.WriteLine("2. Warrior");
+        Console.WriteLine("3. Rogue");
+        Console.WriteLine("4. Mage");
+        Console.WriteLine("5. Priest");
 
+        string input = Console.ReadLine();
+        switch (input)
+        {
+            case "1":
+                return new Druid("Druid", 30, 30, 10, 20, 100);
+            case "2":
+                return new Warrior("Warrior", 30, 30, 22, 20, 100);
+            case "3":
+                return new Rogue("Rogue", 30, 30, 20, 20, 100);
+            case "4":
+                return new Mage("Mage", 25, 25, 20, 15, 100);
+            case "5":
+                return new Priest("Priest", 25, 25, 10, 15, 100);
+            default:
+                Console.WriteLine("Invalid input, creating default character...");
+                return new Character("Default", 30, 30, 15, 15, 100);
+        }
+    }
         // Give the character some equipment
+        //TODO add different starter equipment depending on class
         character.EquipWeapon(new Weapon("Copper Sword", 4));
         character.EquipArmor(new Armor("Fine Tunic", 2));
 
         return character;
     }
-        // Logic and Functionality 
+        // Logic and Functionality
 class Character
 {
     public string Name {
@@ -158,34 +184,6 @@ class Character
         }
 
         Console.WriteLine("Game over!");
-    }
-        // Class selection and default stats [Current Hp, Max HP, AP, Defense, Stamina]
-    static Character CreateCharacter()
-    {
-        Console.WriteLine("Choose a class:");
-        Console.WriteLine("1. Druid");
-        Console.WriteLine("2. Warrior");
-        Console.WriteLine("3. Rogue");
-        Console.WriteLine("4. Mage");
-        Console.WriteLine("5. Priest");
-
-        string input = Console.ReadLine();
-        switch (input)
-        {
-            case "1":
-                return new Druid("Druid", 30, 30, 10, 20, 100);
-            case "2":
-                return new Warrior("Warrior", 30, 30, 22, 20, 100);
-            case "3":
-                return new Rogue("Rogue", 30, 30, 20, 20, 100);
-            case "4":
-                return new Mage("Mage", 25, 25, 20, 15, 100);
-            case "5":
-                return new Priest("Priest", 25, 25, 10, 15, 100);
-            default:
-                Console.WriteLine("Invalid input, creating default character...");
-                return new Character("Default", 30, 30, 15, 15, 100);
-        }
     }
         //Item selections
         //TODO add more stuffs
