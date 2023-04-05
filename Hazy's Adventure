@@ -766,7 +766,7 @@ class Item
         }
         else
         {
-            Console.WriteLine(enemy.GetName() + " wins!");
+            Console.WriteLine(enemy.GetName() + " wins! Time to git gud scrub!");
         }
 
         Console.ReadLine();
