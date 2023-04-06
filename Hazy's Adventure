@@ -249,7 +249,7 @@ public class Character {
                 this.maxStamina += 5;
                 this.strength += 1;
                 this.dexterity += 2;
-                this.endurance += 1;
+                this.endurance += 1.9;
                 this.intelligence += 2;
                 break;
 
@@ -258,7 +258,7 @@ public class Character {
                 this.maxStamina += 4;
                 this.strength += 3;
                 this.dexterity += 1;
-                this.endurance += 1;
+                this.endurance += 1.6;
                 this.intelligence += 1;
                 break;
 
@@ -267,7 +267,7 @@ public class Character {
                 this.maxStamina += 4;
                 this.strength += 2;
                 this.dexterity += 2;
-                this.endurance += 1;
+                this.endurance += 1.8;
                 this.intelligence += 1;
                 break;
 
@@ -276,7 +276,7 @@ public class Character {
                 this.maxStamina += 4;
                 this.strength += 1;
                 this.dexterity += 1;
-                this.endurance += 1;
+                this.endurance += 2;
                 this.intelligence += 2;
                 break;
 
@@ -286,7 +286,7 @@ public class Character {
                 this.strength += 1;
                 this.dexterity += 1;
                 this.endurance += 2;
-                this.intelligence += 1;
+                this.intelligence += 2;
                 break;
         }
 
@@ -389,7 +389,7 @@ public class Character {
             return;
         }
         currentHealth += 50;
-        if (currentHealth > maxHealth)
+        if (currentHealth < maxHealth)
         {
             currentHealth = maxHealth;
         }
@@ -404,7 +404,7 @@ public class Character {
             return;
         }
         currentStamina += 50;
-        if (currentStamina > maxStamina)
+        if (currentStamina < maxStamina)
         {
             currentStamina = maxStamina;
         }
