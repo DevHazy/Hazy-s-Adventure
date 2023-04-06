@@ -152,6 +152,16 @@ class Character
                 }
             }
 
+            // Enemy turn
+            Console.WriteLine();
+            Console.WriteLine(enemy.GetName() + "'s turn:");
+            enemy.PrintStats();
+            enemy.Ability1(player);
+
+            // Regenerate stamina for both player and enemy if i implement the enemy stam
+            player.RegenerateStamina();
+            enemy.RegenerateStamina();
+
             // Check if enemy is defeated
             if (enemies[currentEnemyIndex].GetCurrentHealth() == 0)
             {
@@ -159,15 +169,18 @@ class Character
                 player.GainExperience(enemies[currentEnemyIndex].GetExperience());
                 currentEnemyIndex++;
                 if (currentEnemyIndex == enemies.Length)
-                {
-                    Console.WriteLine("You have defeated all the enemies!");
-                    gameOver = true;
-                }
-                else
-                {
-                    Console.WriteLine("You have encountered a new enemy!");
-                }
+                
+            // Print the winner
+            if (player.GetCurrentHealth() > 0)
+            {
+            Console.WriteLine(player.GetName() + " wins!");
             }
+            else
+            {
+            Console.WriteLine(enemy.GetName() + " Defeat! Time to git gud scrub!");
+        }
+
+        Console.ReadLine();
 
             // Enemy turn while checking if player health = 0, if not regen stam 
             if (!gameOver)
@@ -756,16 +769,6 @@ class Item
             // Regenerate stamina for both characters
             player.RegenerateStamina();
             enemy.RegenerateStamina();
-        }
-
-        // Print the winner
-        if (player.GetCurrentHealth() > 0)
-        {
-            Console.WriteLine(player.GetName() + " wins!");
-        }
-        else
-        {
-            Console.WriteLine(enemy.GetName() + " wins! Time to git gud scrub!");
         }
 
         Console.ReadLine();
