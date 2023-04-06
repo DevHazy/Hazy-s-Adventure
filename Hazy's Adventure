@@ -57,6 +57,7 @@ class HazysAdventure
 
         // World 4 boss
         enemies[21] = new Boss("Rishnok the Demon Lord", 220, 220, 70, 85, true);
+    }
 }
         // Character Creation Including values as in order [CHP, MHP, AP, Defense, Stamina]
     static Character CreateCharacter()
