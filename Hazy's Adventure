@@ -1,7 +1,5 @@
-        // Startup of the App :) 
-        //CHP = Current health points
-        //MHP = Max health points
 using System;
+using System.Collections.Generic;
 
 namespace Hazy_s_Adventure
 {
@@ -11,6 +9,8 @@ namespace Hazy_s_Adventure
         static int screenHeight = 25;
         static int playerX = 0;
         static int playerY = 0;
+        static Random rand = new Random();
+        static List<int[]> enemies = new List<int[]>();
 
         static void Main(string[] args)
         {
@@ -23,6 +23,9 @@ namespace Hazy_s_Adventure
             // Initialize the game screen and draw the player character
             InitializeGameScreen();
             DrawGameScreen();
+
+            // Initialize the enemies
+            InitializeEnemies();
 
             // Loop to read input from the keyboard and move the player character
             while (true)
@@ -48,6 +51,9 @@ namespace Hazy_s_Adventure
             // Draw the player character at the current position
             Console.SetCursorPosition(playerX, playerY);
             Console.Write("O");
+
+            // Draw the enemies
+            DrawEnemies();
 
             Console.SetCursorPosition(0, screenHeight - 1);
             Console.Write("Press any arrow key to move, or press Q to quit.");
@@ -96,33 +102,16 @@ namespace Hazy_s_Adventure
                 DrawGameScreen();
             }
         }
+
+        static void InitializeEnemies()
+{
+         for (int i = 0; i < 10; i++)
+    {
+        int enemyX = rand.Next(screenWidth);
+        int enemyY = rand.Next(screenHeight);
+        enemies.Add(new int[] { enemyX, enemyY });
     }
 }
-        // Create player character
-        Character player = CreateCharacter();
-
-        // Create enemies Including values such as [CHP, MHP, AP, Def, IF BOSS]
-        //Maybe add stamina for enemies but dunno yet
-        class Enemy {
-         String name;
-         int chp;
-         int mhp;
-         int ap;
-         int defense;
-         boolean boss;
-
-         public Enemy(String name, int chp, int mhp, int ap, int defense, boolean boss) {
-        this.name = name;
-        this.CHP = chp;
-        this.MHP = mhp;
-        this.AP = ap;
-        this.Def = defense;
-        this.boss = boss;
-    }
-}
-
-        Enemy[] enemies = new Enemy[22];
-
         // World 1 enemies
 
         enemies[0] = new Enemy("Goblin", 15, 15, 10, 10, false);
@@ -165,6 +154,9 @@ namespace Hazy_s_Adventure
         // World 4 boss
         enemies[21] = new Boss("Rishnok the Demon Lord", 220, 220, 70, 85, true);
 
+    }
+
+
         // Character Creation Including values as in order [CHP, MHP, AP, Defense, Stamina]
     static Character CreateCharacter()
     {
@@ -201,38 +193,6 @@ namespace Hazy_s_Adventure
 
         return character;
     }
-        // Logic and Functionality
-
-        //Define enum to represent the different options 
-enum MenuOption
-{
-    Inventory,
-    Stats,
-    Equipment
-}
-        // Adds event listener to console input
-ConsoleKeyInfo input;
-Console.TreatControlCAsInput = true;
-Console.CancelKeyPress += new ConsoleCancelEventHandler(Console_CancelKeyPress);
-
-while (true)
-{
-    Console.WriteLine("Enter a command:");
-    input = Console.ReadKey(true);
-
-    // Check if the Tab key was pressed
-    if (input.Key == ConsoleKey.Tab)
-    {
-        // Display the menu options and wait for the player to choose an option
-        MenuOption option = DisplayMenu();
-        // Handle the selected option
-        HandleMenuOption(option);
-    }
-    else
-    {
-        // Process the players input as usual
-    }
-}
 static void Console_CancelKeyPress(object sender, ConsoleCancelEventArgs e)
 {
     // Check if the Tab key was pressed
@@ -1127,4 +1087,5 @@ class Item
 
         Console.ReadLine();
     }
+}
 }
