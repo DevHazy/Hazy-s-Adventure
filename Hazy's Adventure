@@ -3,12 +3,101 @@
         //MHP = Max health points
 using System;
 
-class HazysAdventure
+namespace Hazy_s_Adventure
 {
-    static void Main(string[] args)
+    class Program
     {
-        Console.WriteLine("Welcome to Hazy's Adventure!");
+        static int screenWidth = 80;
+        static int screenHeight = 25;
+        static int playerX = 0;
+        static int playerY = 0;
 
+        static void Main(string[] args)
+        {
+            // Get the player's name
+            Console.Write("Enter your character's name: ");
+            string playerName = Console.ReadLine();
+
+            Console.WriteLine($"Welcome to Hazy's Adventure, {playerName}!");
+
+            // Initialize the game screen and draw the player character
+            InitializeGameScreen();
+            DrawGameScreen();
+
+            // Loop to read input from the keyboard and move the player character
+            while (true)
+            {
+                GetPlayerInput();
+            }
+        }
+
+        static void InitializeGameScreen()
+        {
+            Console.Clear();
+            Console.WindowWidth = screenWidth;
+            Console.WindowHeight = screenHeight;
+            Console.BufferWidth = screenWidth;
+            Console.BufferHeight = screenHeight;
+            Console.CursorVisible = false;
+        }
+
+        static void DrawGameScreen()
+        {
+            Console.Clear();
+
+            // Draw the player character at the current position
+            Console.SetCursorPosition(playerX, playerY);
+            Console.Write("O");
+
+            Console.SetCursorPosition(0, screenHeight - 1);
+            Console.Write("Press any arrow key to move, or press Q to quit.");
+        }
+
+        static void GetPlayerInput()
+        {
+            ConsoleKeyInfo input = Console.ReadKey(true);
+
+            switch (input.Key)
+            {
+                case ConsoleKey.W:
+                case ConsoleKey.UpArrow:
+                    MovePlayer(0, -1);
+                    break;
+                case ConsoleKey.A:
+                case ConsoleKey.LeftArrow:
+                    MovePlayer(-1, 0);
+                    break;
+                case ConsoleKey.S:
+                case ConsoleKey.DownArrow:
+                    MovePlayer(0, 1);
+                    break;
+                case ConsoleKey.D:
+                case ConsoleKey.RightArrow:
+                    MovePlayer(1, 0);
+                    break;
+                case ConsoleKey.Q:
+                    Environment.Exit(0);
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        static void MovePlayer(int deltaX, int deltaY)
+        {
+            int newX = playerX + deltaX;
+            int newY = playerY + deltaY;
+
+            // Check if the new position is valid (i.e., not outside the bounds of the game screen)
+            if (newX >= 0 && newX < screenWidth && newY >= 0 && newY < screenHeight)
+            {
+                playerX = newX;
+                playerY = newY;
+                DrawGameScreen();
+            }
+        }
+    }
+}
         // Create player character
         Character player = CreateCharacter();
 
@@ -57,8 +146,7 @@ class HazysAdventure
 
         // World 4 boss
         enemies[21] = new Boss("Rishnok the Demon Lord", 220, 220, 70, 85, true);
-    }
-}
+        
         // Character Creation Including values as in order [CHP, MHP, AP, Defense, Stamina]
     static Character CreateCharacter()
     {
@@ -301,7 +389,7 @@ class Character
             }
             else
             {
-            Console.WriteLine(enemy.GetName() + " Defeat! Time to git gud scrub!");
+            Console.WriteLine(enemy.GetName() + "Has defeated you! Time to git gud scrub!");
         }
 
         Console.ReadLine();
@@ -853,7 +941,7 @@ class Item
         // Loop until either the player or the enemy dies
         while (player.GetCurrentHealth() > 0 && enemy.GetCurrentHealth() > 0)
         {
-            // Player turn, write info in textbos e.g. "player" used Shadowstep
+            // Player turn, write info in textbox e.g. "player" used Shadowstep
             Console.WriteLine();
             Console.WriteLine(player.GetName() + "'s turn:");
             player.PrintStats();
