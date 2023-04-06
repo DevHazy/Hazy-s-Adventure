@@ -103,6 +103,24 @@ namespace Hazy_s_Adventure
 
         // Create enemies Including values such as [CHP, MHP, AP, Def, IF BOSS]
         //Maybe add stamina for enemies but dunno yet
+        class Enemy {
+         String name;
+         int chp;
+         int mhp;
+         int ap;
+         int defense;
+         boolean boss;
+
+         public Enemy(String name, int chp, int mhp, int ap, int defense, boolean boss) {
+        this.name = name;
+        this.CHP = chp;
+        this.MHP = mhp;
+        this.AP = ap;
+        this.Def = defense;
+        this.boss = boss;
+    }
+}
+
         Enemy[] enemies = new Enemy[22];
 
         // World 1 enemies
@@ -146,7 +164,7 @@ namespace Hazy_s_Adventure
 
         // World 4 boss
         enemies[21] = new Boss("Rishnok the Demon Lord", 220, 220, 70, 85, true);
-        
+
         // Character Creation Including values as in order [CHP, MHP, AP, Defense, Stamina]
     static Character CreateCharacter()
     {
@@ -178,8 +196,8 @@ namespace Hazy_s_Adventure
     }
         // Give the character some equipment
         //TODO add different starter equipment depending on class
-        character.EquipWeapon(new Weapon("Copper Sword", 4));
-        character.EquipArmor(new Armor("Fine Tunic", 2));
+        character.EquipWeapon(new Weapon("Rusty Sword", 2));
+        character.EquipArmor(new Armor("Loin Cloth", 1));
 
         return character;
     }
@@ -920,19 +938,143 @@ class Item
         // Create some items [CHP,MHP,AP,Def,Int,Stam]
         //TODO add more items :) 
         //Maybe delete the loop but keep battle begins msg
-        Item sword = new Item("Sword", "A sharp blade, gotta start somewhere", 0, 0, 5, 0, 0, 0);
-        Item shield = new Item("Shield", "A sturdy defense, better than your bare hands", 0, 5, 0, 10, 0, 0);
-        Item wand = new Item("Wand", "A magical instrument, highly flammable", 0, 0, 0, 10, 0, 0);
+        //Maybe also add weapon skills and armor skill increasing defense depending 
+        //on what AC it is and maybe increase crit% with weapon skill
+        
+        //1 handed Swords, can be worn together with shield
+        //TODO add dots and a power increase after unlocking something for the Legendary Shortsword
+        Item Sword = new Item("Shortsword", "A small, agile weapon with a sharp blade, perfect for quick strikes and close combat.", 0, 0, 4, 0, 0, 0);
+        Item Sword = new Item("Gladius", "A short, thrusting sword favored by Roman soldiers, designed for both offense and defense.", 0, 0, 5, 0, 0, 0);
+        Item Sword = new Item("Rapier", "A slender, elegant sword with a pointed blade, used for thrusting attacks and fencing.", 0, 0, 7, 0, 0, 0);
+        Item Sword = new Item("Cutlass", "A curved, single-edged sword used by pirates and sailors for slashing attacks.", 0, 0, 11, 0, 0, 0);
+        Item Sword = new Item("Dark Shortsword", " A sword with a dark aura, capable of draining the life force from enemies.", 0, 0, 11, 0, 0, 0);
+        Item Sword = new Item("Poisoned Sword", "A sword coated with deadly poison, it can deal additional damage over time.", 0, 0, 13, 0, 0, 0);
+        Item Sword = new Item("Longsword", "A versatile sword with a straight blade, used for both thrusting and slashing attacks.", 0, 0, 15, 0, 0, 0);
+        Item Sword = new Item("Enchanted Shortsword", "A short sword imbued with terrible Magic, capable of dealing extra damage on attack.", 0, 0, 15, 0, 0, 0);
+        Item Sword = new Item("Fiery Longsword", " A sword that bursts into flames upon contact with an enemy, dealing extra damage..", 0, 0, 18, 0, 0, 0);
+        Item Sword = new Item("Legendary Shortsword", "A sword with a rich history, it has been passed down through generations and is said to have magical properties.", 0, 0, 25, 0, 0, 0);
+        Item Sword = new Item("Demonic Blade", "A sharp blade forged in the depths of Hell, imbued with souls of the fallen.", 0, 0, 33, 0, 0, 0);
 
-        // Apply the items to the player character
+
+        //Shields
+        Item Shield = new Item("Round Shield", "A simple, circular shield for one-handed use.", 0, 4, 0, 4, 0, 5);
+        Item Shield = new Item("Kite Shield", "A large, triangular-shaped shield for cavalry units.", 0, 5, 0, 7, 0, 6);
+        Item Shield = new Item("Tower Shield", "A tall and wide shield for heavily armored infantry.", 0, 7, 0, 9, 0, 7);
+        Item Shield = new Item("Buckler", " A small, handheld shield for one-handed use.", 0, 8, 0, 12, 0, 10);
+        Item Shield = new Item("Heater Shield", "A slightly curved shield for upper body protection.", 0, 8, 0, 14, 0, 10);
+        Item Shield = new Item("Scutum", "A large, rectangular shield used by ancient Roman soldiers.", 0, 10, 0, 16, 0, 10);
+        Item Shield = new Item("Pavise", "A large, heavy shield for archer cover.", 0, 12, 0, 20, 0, 15);
+        Item Shield = new Item("Targe", "A small, round shield for Scottish warriors.", 0, 15, 0, 20, 0, 15);
+        Item Shield = new Item("Hoplon", "A large, round shield used by ancient Greek soldiers.", 0, 18, 0, 23, 0, 20);
+        Item Shield = new Item("Aspis", "A large, round shield for ancient Spartan soldiers.", 0, 24, 0, 28, 0, 23);
+        
+
+        
+        //Wands can be worn with a shield
+        Item Wand = new Item("Vine Wand", "A wand made from the wood of the Vine plant, known for its ability to perform magic related to growth and transformation.", 0, 0, 0, 3, 0, 0);
+        Item Wand = new Item("Hawthon Wand", "A wand made from the wood of the Hawthorn tree, known for its defensive and protective magic.", 0, 0, 0, 4, 0, 0);
+        Item Wand = new Item("Dragon Heartstring Wand", "A wand with a core made from a dragon's heartstring, known for its power and versatility.", 0, 0, 0, 6, 0, 0);
+        Item Wand = new Item("Unicorn Horn Wand", "A wand with a core made from a unicorn's horn, known for its loyalty and ability to perform healing magic.", 0, 0, 0, 9, 0, 0);
+        Item Wand = new Item("Phoenix Feather Wand", " A wand with a core made from a phoenix's feather, known for its ability to perform magic related to fire and transformation.", 0, 0, 0, 10, 0, 0);
+        Item Wand = new Item("Willow Wand", "A wand made from the wood of the Willow tree, known for its ability to perform magic related to divination and healing.", 0, 0, 0, 12, 0, 0);
+        Item Wand = new Item("Oak Wand", "A wand made from the wood of the Oak tree, known for its strength and ability to perform magic related to protection.", 0, 0, 0, 14, 0, 0);
+        Item Wand = new Item("Maple Wand", "A wand made from the wood of the Maple tree, known for its ability to perform magic related to charm and persuasion.", 0, 0, 0, 17, 0, 0);
+        Item Wand = new Item("Ebony Wand", "A wand made from the wood of the Ebony tree, known for its ability to perform magic related to the dark arts and protection from dark magic.", 0, 0, 0, 23, 0, 0);
+        Item Wand = new Item("Elder Wand", "A long, slender wand made from the wood of the Elder tree, said to be the most powerful wand in existence.", 0, 0, 0, 28, 0, 0);
+
+
+        //Staves count as two handers, so no shields
+        Item Staff = new Item("Staff of Fire", "A powerful staff that can create and control flames, causing devastating damage to enemies.", 0, 0, 0, 5, 0, 0);
+        Item Staff = new Item("Staff of Ice", "A staff that can create and control ice, freezing enemies in their tracks.", 0, 0, 0, 8, 0, 0);
+        Item Staff = new Item("Staff of Arcane Lightning", "A staff that can call down bolts of lightning, dealing heavy damage to enemies.", 0, 0, 0, 10, 0, 0);
+        Item Staff = new Item("Staff of Healing", "A staff that can heal wounds and cure ailments, making it invaluable to any group of adventurers.", 0, 0, 0, 12, 0, 0);
+        Item Staff = new Item("Staff of the Elements", "A staff that can control all four elements (fire, ice, lightning, and earth), making it an extremely versatile weapon.", 0, 0, 0, 15, 0, 0);
+        Item Staff = new Item("Staff of the Druid", " A staff that can control nature and summon animals, making it a valuable tool for any druid or nature-based caster.", 0, 0, 0, 18, 0, 0);
+        Item Staff = new Item("Staff of Necromancy", "A staff that can raise the dead and control undead creatures, making it a powerful weapon for dark wizards.", 0, 0, 0, 21, 0, 0);
+        Item Staff = new Item("Staff of Destruction", "A staff crafted with the power of elements forged in hellfire.", 0, 0, 0, 26, 0, 0);
+        Item Staff = new Item("Staff of the Archmage", "A staff that enhances the wielder's magical abilities, making them more powerful and versatile in combat.", 0, 0, 0, 29, 0, 0);
+        Item Staff = new Item("Staff of Time", "A staff that can manipulate time, allowing the wielder to slow down or speed up time, making it a valuable tool for both offense and defense.", 0, 0, 0, 35 , 0, 0);
+
+
+        //Maces
+        Item Mace = new Item("Club", "A simple, wooden mace that can deal heavy blunt force damage.", 0, 0, 5, 0, 0, 0);
+        Item Mace = new Item("Spiked Mace", "A mace with long, sharp spikes protruding from the head, making it deadly against both armored and unarmored foes.", 0, 0, 6, 0, 0, 0);
+        Item Mace = new Item("Flanged Mace", "A mace with sharp, spiked flanges that can cause serious damage to armored opponents.", 0, 0, 7, 0, 0, 0);
+        Item Mace = new Item("Morningstar", "A mace with a spiked ball on the end of a chain, allowing for greater reach and more versatile attacks.", 0, 0, 11, 0, 0, 0);
+        Item Mace = new Item("Blacksmiths hammer", "A mace normally used for crafting, but can be used as a weapon.", 0, 0, 12, 0, 0, 0);
+        Item Mace = new Item("Cudgel", "A short, heavy mace with a flat, bludgeoning head.", 0, 0, 15, 0, 0, 0);
+        Item Mace = new Item("Holy Mace", "A mace that deals extra damage to undead and demonic enemies, blessed by a religious order.", 0, 0, 17, 0, 0, 0);
+        Item Mace = new Item("Bone Mace", "A mace made from the bones of fallen foes, often used by tribal warriors.", 0, 0, 21, 0, 0, 0);
+        Item Mace = new Item("Inferno Mace", "A mace made crafted from bones of fallen enemies in the fiery dephts.", 0, 0, 25, 0, 0, 0);
+        Item Mace = new Item("Moonlight Mace", "A mace made from a rare metal that shines with a soft, silver light. It is said to be imbued with the power of the moon, allowing it to deal extra damage to enemies who draw power from darkness. The Moonlight Mace also has the ability to heal the wielder when striking enemies that are weak to moon magic. The metal is incredibly light, making the mace surprisingly easy to wield despite its power. The Moonlight Mace is highly sought after by paladins and other holy warriors who seek to rid the world of evil.", 0, 0, 33, 0, 0, 0);
+
+
+        //Daggers can be dual wielded together with a sword or mace as a rogue or warrior.
+        //TODO add modifier so rogue gets extra damage from dual wielding daggers. 
+        Item Dagger = new Item("Iron Dagger", "A simple, yet effective weapon made of iron that can pierce through light armor.", 0, 0, 3, 0, 0, 0);
+        Item Dagger = new Item("Silver Dagger", "A dagger made of silver, which deals extra damage to enemies vulnerable to silver.", 0, 0, 4, 0, 0, 0);
+        Item Dagger = new Item("Poisoned Dagger", "A dagger coated in deadly poison that deals damage over time to enemies.", 0, 0, 5, 0, 0, 0);
+        Item Dagger = new Item("Obsidian Dagger", "A sharp and deadly dagger made of volcanic glass, which can easily pierce through armor.", 0, 0, 7, 0, 0, 0);
+        Item Dagger = new Item("Stiletto", "A slender dagger with a long, narrow blade designed to penetrate the gaps in armor.", 0, 0, 8, 0, 0, 0);
+        Item Dagger = new Item("Ceramic Dagger", "A light and durable dagger made of ceramic material, which can be easily concealed.", 0, 0, 9, 0, 0, 0);
+        Item Dagger = new Item("Fire Dagger", "A magical dagger that deals fire damage to enemies, making it a powerful weapon against foes vulnerable to heat.", 0, 0, 11, 0, 0, 0);
+        Item Dagger = new Item("Ice Dagger", "A magical dagger that deals ice damage to enemies, making it a powerful weapon against foes vulnerable to cold.", 0, 0, 12, 0, 0, 0);
+        Item Dagger = new Item("Shadow Dagger", "A mysterious dagger that allows the wielder to teleport short distances, making it an excellent tool for both combat and infiltration.", 0, 0, 14, 0, 0, 0);
+        Item Dagger = new Item("Soul Reaver", "A powerful dagger forged from the bones of demons, which can steal the soul of an enemy upon a killing blow. The Soul Reaver allows the wielder to use the stolen souls to gain temporary enhancements to their own abilities.", 0, 0, 15, 0, 0, 0);
+        Item Dagger = new Item("Fang of the Vampire", "A unique dagger with a blade made from the fang of a vampire. The Fang of the Vampire not only deals extra damage to undead enemies, but also has the ability to drain the life force of enemies, healing the wielder in the process.", 0, 0, 17, 0, 0, 0);
+        Item Dagger = new Item("Serpent's Kiss", "A legendary dagger imbued with the power of a venomous serpent. The Serpent's Kiss not only deals poison damage to enemies, but also has the ability to turn them against their allies for a short period of time. The wielder must be careful when using this powerful weapon, as it is said that the serpent's power can corrupt even the most noble of hearts.", 0, 0, 20, 0, 0, 0);
+
+
+        //Two handers cant be used with shields
+        Item Twohander = new Item("Greatsword", "A massive two-handed sword capable of dealing devastating damage to enemies.", 0, 0, 7, 0, 0, 0);
+        Item Twohander = new Item("Claymore", "A Scottish two-handed sword with a broad blade that can cut through multiple enemies at once.", 0, 0, 10, 0, 0, 0);
+        Item Twohander = new Item("Zweihander", "A German two-handed sword with a long blade designed for thrusting and cutting.", 0, 0, 12, 0, 0, 0);
+        Item Twohander = new Item("Warhammer", "A heavy two-handed mace with a flat end that can deal crushing blows to enemies.", 0, 0, 15, 0, 0, 0);
+        Item Twohander = new Item("Maul", "A large two-handed mace with a heavy, spiked head that can crush even heavily-armored foes.", 0, 0, 18, 0, 0, 0);
+        Item Twohander = new Item("Halberd", "A two-handed polearm with a blade on the end, allowing for greater reach and the ability to trip enemies.", 0, 0, 21, 0, 0, 0);
+        Item Twohander = new Item("Great Axe", "A massive two-handed axe with a broad blade that can cleave through multiple enemies at once.", 0, 0, 24, 0, 0, 0);
+        Item Twohander = new Item("Flail", "A two-handed weapon with a spiked ball on a chain, allowing for greater reach and the ability to wrap around shields.", 0, 0, 27, 0, 0, 0);
+        Item Twohander = new Item("Nodachi", "A Japanese two-handed sword with a long, curved blade designed for quick, sweeping strikes.", 0, 0, 30, 0, 0, 0);
+        Item Twohander = new Item("Bastard Sword", "A versatile two-handed sword that can be wielded with one or two hands, allowing for greater flexibility in combat.", 0, 0, 33, 0, 0, 0);
+        Item Twohander = new Item("Excalibur", "A legendary sword said to have been wielded by King Arthur himself. Excalibur is a powerful magical weapon capable of dealing massive damage to unholy forces.", 0, 0, 45, 0, 0, 0);
+        Item Twohander = new Item("Thunder Maul", "A massive mace imbued with the power of lightning, allowing it to deal extra damage to enemies vulnerable to electricity.", 0, 0, 46, 0, 0, 0);
+        Item Twohander = new Item("Dragon's Bane", "A spear made from dragon bones, which deals extra damage to dragons and can even pierce their tough scales.", 0, 0, 46, 0, 0, 0);
+
+
+
+        //Armor
+        //Maybe add stamina penalty for heavier armors while leather/scale might increase stam. 
+        Item Armor = new Item("Cloth Tunic", "Basic armor made of cloth, providing minimal protection.", 0, 5, 0, 3, 0, 0);
+        Item Armor = new Item("Bat leather Chest", "Armor made of hardened leather, offering a slight improvement in protection over cloth armor How did you even get this?.", 0, 5, 0, 4, 0, 0);
+        Item Armor = new Item("Chainmail Armor", "Armor made of interlocking rings, providing good protection against slashing attacks but not as effective against piercing or crushing attacks.", 0, 8, 0, 12, 0, 0);
+        Item Armor = new Item("Plate Armor", "Armor made of hardened metal plates, providing excellent protection against all types of attacks but also heavy and cumbersome to wear.", 0, 10, 0, 15, 0, 0);
+        Item Armor = new Item("Scale Armor", "Armor made of overlapping metal scales, offering good protection while also being lighter and more flexible than plate armor.", 0, 15, 0, 13, 0, 0);
+        Item Armor = new Item("Brigand Armor", "Armor made of metal plates sewn into a fabric coat, offering a good balance between protection and mobility.", 0, 17, 0, 15, 0, 0);
+        Item Armor = new Item("Lamellar Armor", "Armor made of small metal or leather plates laced together, offering good protection and flexibility.", 0, 19, 0, 16, 0, 0);
+        Item Armor = new Item("Splint Armor", "Armor made of metal strips riveted to a fabric or leather base, offering good protection against blunt attacks.", 0, 22, 0, 16, 0, 0);
+        Item Armor = new Item("Gothic Armor", "armor made of articulated metal plates, offering excellent protection and flexibility, commonly used in the late Middle Ages.", 0, 25, 0, 20, 0, 0);
+        Item Armor = new Item("Dragon Scale Armor", " legendary armor made of the scales of a dragon, offering almost impenetrable protection and often imbued with magical properties..", 0, 30, 0, 33, 0, 0);
+        Item Armor = new Item("Demon Armor", "Demon armor is a jet black, fearsome set crafted from infernal hides, adorned with twisted horns and spikes, durable against physical and magical attacks, imbued with dark magic to resist and control demonic powers, but at a cost of succumbing to its demonic influence..", 0, 35, 0, 40, 0, 0);
+
+        // Apply the items and bonuses to the player character
         sword.ApplyBonus(player);
+        mace.ApplyBonus(player);
+        dagger.ApplyBonus(player);
         shield.ApplyBonus(player);
         wand.ApplyBonus(player);
+        staff.ApplyBonus(payer);
+        Twohander.ApplyBonus(player);
+        Armor.ApplyBonus(player);
 
         Console.WriteLine(player.GetName() + " has equipped the following items:");
         Console.WriteLine("- " + sword.name);
+        Console.WriteLine("- " + mace.name);
+        Console.WriteLine("- " + dagger.name);
         Console.WriteLine("- " + shield.name);
         Console.WriteLine("- " + wand.name);
+        Console.WriteLine("- " + staff.name);
+        Console.WriteLine("- " + Twohander.name);
+        Console.WriteLine("- " + armor.name);
 
 
         Console.WriteLine();
