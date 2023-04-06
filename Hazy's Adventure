@@ -96,6 +96,128 @@ class HazysAdventure
         return character;
     }
         // Logic and Functionality
+
+        //Define enum to represent the different options 
+enum MenuOption
+{
+    Inventory,
+    Stats,
+    Equipment
+}
+        // Adds event listener to console input
+ConsoleKeyInfo input;
+Console.TreatControlCAsInput = true;
+Console.CancelKeyPress += new ConsoleCancelEventHandler(Console_CancelKeyPress);
+
+while (true)
+{
+    Console.WriteLine("Enter a command:");
+    input = Console.ReadKey(true);
+
+    // Check if the Tab key was pressed
+    if (input.Key == ConsoleKey.Tab)
+    {
+        // Display the menu options and wait for the player to choose an option
+        MenuOption option = DisplayMenu();
+        // Handle the selected option
+        HandleMenuOption(option);
+    }
+    else
+    {
+        // Process the players input as usual
+    }
+}
+static void Console_CancelKeyPress(object sender, ConsoleCancelEventArgs e)
+{
+    // Check if the Tab key was pressed
+    if (e.SpecialKey == ConsoleSpecialKey.Tab)
+    {
+        // Display the menu options and wait for the player to choose an option
+        MenuOption option = DisplayMenu();
+        // Handle the selected option
+        HandleMenuOption(option);
+        // Prevent the default behavior (i.e., exit the program)
+        e.Cancel = true;
+    }
+}
+static MenuOption DisplayMenu()
+{
+    Console.WriteLine("Menu Options:");
+    Console.WriteLine("1. Inventory");
+    Console.WriteLine("2. Stats");
+    Console.WriteLine("3. Equipment");
+    Console.WriteLine("Choose an option:");
+
+    ConsoleKeyInfo input = Console.ReadKey(true);
+    switch (input.KeyChar)
+    {
+        case '1':
+            return MenuOption.Inventory;
+        case '2':
+            return MenuOption.Stats;
+        case '3':
+            return MenuOption.Equipment;
+        default:
+            Console.WriteLine("Invalid option. Please try again.");
+            return DisplayMenu();
+    }
+}
+
+static void HandleMenuOption(MenuOption option)
+{
+    switch (option)
+    {
+        case MenuOption.Inventory:
+            // Handle the inventory option
+            break;
+        case MenuOption.Stats:
+            // Handle the stats option
+            break;
+        case MenuOption.Equipment:
+            // Handle the equipment option
+            break;
+        default:
+            break;
+    }
+}   
+
+        //Adding movement to the game
+
+private void MovePlayer(int deltaX, int deltaY)
+{
+    // Calculate the new position of the player character
+    int newX = playerX + deltaX;
+    int newY = playerY + deltaY;
+
+    // Check if the new position is valid (i.e., not outside the bounds of the game screen)
+    if (newX >= 0 && newX < screenWidth && newY >= 0 && newY < screenHeight)
+    {
+        // Check if the new position collides with any obstacles or walls
+        if (!CollidesWithObstacle(newX, newY))
+        {
+            // Update the position of the player character
+            playerX = newX;
+            playerY = newY;
+
+            // Redraw the game screen with the player character in the new position
+            DrawGameScreen();
+        }
+    }
+}
+
+private bool CollidesWithObstacle(int x, int y)
+{
+    // Check if the given coordinates collide with any obstacle or wall
+    foreach (var obstacle in obstacles)
+    {
+        if (obstacle.X == x && obstacle.Y == y)
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
 class Character
 {
     public string Name {
@@ -115,6 +237,7 @@ class Character
             bool turnOver = false;
             while (!turnOver)
             {
+            // Add debuffs and buffs to status
                 Console.WriteLine("Choose an action:");
                 Console.WriteLine("1. Attack");
                 Console.WriteLine("2. Use item");
