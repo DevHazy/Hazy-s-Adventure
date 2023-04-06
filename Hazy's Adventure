@@ -71,20 +71,20 @@ class HazysAdventure
         Console.WriteLine("4. Mage");
         Console.WriteLine("5. Priest");
 
-        //Values displayed as [CHP,MHP,AP,Def,Stam]
+        //Values displayed as [CHP,MHP,AP,Def,Int,Stam]
         string input = Console.ReadLine();
         switch (input)
         {
             case "1":
-                return new Druid("Druid", 30, 30, 10, 20, 100);
+                return new Druid("Druid", 30, 30, 15, 20, 25, 100);
             case "2":
-                return new Warrior("Warrior", 30, 30, 22, 20, 100);
+                return new Warrior("Warrior", 30, 30, 23, 20, 10, 100);
             case "3":
-                return new Rogue("Rogue", 30, 30, 20, 20, 100);
+                return new Rogue("Rogue", 30, 30, 20, 20, 12, 100);
             case "4":
-                return new Mage("Mage", 25, 25, 20, 15, 100);
+                return new Mage("Mage", 25, 25, 8, 15, 26, 100);
             case "5":
-                return new Priest("Priest", 25, 25, 10, 15, 100);
+                return new Priest("Priest", 25, 25, 10, 15, 23, 100);
         }
     }
         // Give the character some equipment
@@ -459,21 +459,22 @@ class Druid : Character
         int damage = strength + 40;
         target.TakeDamage(damage);
     }
+    
 
 
     // Ability 8: Nature's Touch - heals the target character by a fixed amount
-    public void Nature's_Touch(Character target)
+    public void Ability8(Character target)
     {
         int healAmount = 33; // Adjustable value, TODO make it scale with int
         if (this.currentStamina >= 10)
         {
-            Console.WriteLine(this.name + " casts Nature's Touch on " + target.GetName() + " and heals them for " + healAmount + " health.");
-            target.Heal(healAmount);
-            this.currentStamina -= 10;
+        Console.WriteLine(this.name + " casts Nature's Touch on " + target.GetName() + " and heals them for " + healAmount + " health.");
+        target.Heal(healAmount);
+        this.currentStamina -= 10;
         }
         else
         {
-            Console.WriteLine("Not enough stamina to use Nature's Touch!");
+        Console.WriteLine("Not enough stamina to use Nature's Touch!");
         }
     }
 }
@@ -633,19 +634,19 @@ class Priest : Character
         int damage = intelligence + 30;
         target.TakeDamage(damage);
     }
-    // Ability 3: Blessing - heals the target character by a fixed amount
-    public void Blessing(Character target)
+    // Ability 3: Blessing - heals the target character by a fixed amount scaled with int
+    public void Ability7(Character target)
     {
-        int healAmount = 20; // You can adjust this value as needed
+        int healAmount = 20; // adjustable value, make it scale with int
         if (this.currentStamina >= 10)
         {
-            Console.WriteLine(this.name + " casts Divine Blessing on " + target.GetName() + " and heals them for " + healAmount + " health.");
-            target.Heal(healAmount);
-            this.currentStamina -= 10;
+        Console.WriteLine(this.name + " casts Divine Blessing on " + target.GetName() + " and heals them for " + healAmount + " health.");
+        target.Heal(healAmount);
+        this.currentStamina -= 10;
         }
         else
         {
-            Console.WriteLine("Not enough stamina to use Blessing!");
+        Console.WriteLine("Not enough stamina to use Blessing!");
         }
     }
 }
@@ -694,12 +695,12 @@ class Item
 {
 
 
-        // Create some items [Ap, defense, Current HP, Max Hp, Stamina]
+        // Create some items [CHP,MHP,AP,Def,Int,Stam]
         //TODO add more items :) 
         //Maybe delete the loop but keep battle begins msg
-        Item sword = new Item("Sword", "A sharp blade, gotta start somewhere", 5, 0, 0, 0, 0);
-        Item shield = new Item("Shield", "A sturdy defense, better than your bare hands", 0, 5, 10, 0, 0);
-        Item wand = new Item("Wand", "A magical instrument, highly flammable", 0, 0, 0, 10, 0);
+        Item sword = new Item("Sword", "A sharp blade, gotta start somewhere", 0, 0, 5, 0, 0, 0);
+        Item shield = new Item("Shield", "A sturdy defense, better than your bare hands", 0, 5, 0, 10, 0, 0);
+        Item wand = new Item("Wand", "A magical instrument, highly flammable", 0, 0, 0, 10, 0, 0);
 
         // Apply the items to the player character
         sword.ApplyBonus(player);
