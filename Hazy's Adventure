@@ -288,9 +288,6 @@ public class Character {
                 this.endurance += 2;
                 this.intelligence += 1;
                 break;
-
-            default:
-                throw new Exception("Invalid character class.");
         }
 
         this.currentHealth = this.maxHealth;
