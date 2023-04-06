@@ -933,16 +933,16 @@ class Item
 }
 class Item
 {
-
-
+        //TODO make classes like warrior and rogue able to dual wield one handed weapons 
+        //TODO add dots and a power increase after unlocking something for the Legendary Shortsword
         // Create some items [CHP,MHP,AP,Def,Int,Stam]
         //TODO add more items :) 
         //Maybe delete the loop but keep battle begins msg
         //Maybe also add weapon skills and armor skill increasing defense depending 
         //on what AC it is and maybe increase crit% with weapon skill
-        
         //1 handed Swords, can be worn together with shield
-        //TODO add dots and a power increase after unlocking something for the Legendary Shortsword
+
+    
         Item Sword = new Item("Shortsword", "A small, agile weapon with a sharp blade, perfect for quick strikes and close combat.", 0, 0, 4, 0, 0, 0);
         Item Sword = new Item("Gladius", "A short, thrusting sword favored by Roman soldiers, designed for both offense and defense.", 0, 0, 5, 0, 0, 0);
         Item Sword = new Item("Rapier", "A slender, elegant sword with a pointed blade, used for thrusting attacks and fencing.", 0, 0, 7, 0, 0, 0);
