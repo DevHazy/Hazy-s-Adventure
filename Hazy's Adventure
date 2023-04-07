@@ -199,8 +199,6 @@ class MainClass
                 return new Mage("Mage", 25, 25, 8, 15, 26, 100);
             case "5":
                 return new Priest("Priest", 25, 25, 10, 15, 23, 100);
-            case "6":
-                return new Flee("Flee", 30, 30, 5, 20, 12, 100);
             default:
                 Console.WriteLine("Invalid choice. Please choose a valid class.");
                 return CreateCharacter();
