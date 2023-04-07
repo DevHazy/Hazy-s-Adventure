@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 
 namespace Hazy_s_Adventure
+        //Startup 
 {
     class Program
     {
@@ -147,12 +148,35 @@ namespace Hazy_s_Adventure
     }
 }
 
-
-        // Character Creation Including values as in order [CHP, MHP, AP, Defense, Stamina]
-    static Character CreateCharacter()
+class MainClass
+{
+    static void Main()
     {
-        // Class selection and default stats [CHP, MHP, AP, Defense, Stamina]
-    static Character CreateCharacter()
+        Class playerClass = CreateCharacter();
+        Console.WriteLine("You have created a " + playerClass.Name + ".");
+
+        // create a new character
+        Class character = CreateCharacter();
+
+        // create a new weapon
+        Weapon rustySword = new Weapon("Rusty Sword", 2);
+
+        // equip the weapon to the character
+        character.EquipWeapon(rustySword);
+
+        // listen for the Tab key to display the menu
+        Console.CancelKeyPress += new ConsoleCancelEventHandler(Console_CancelKeyPress);
+
+        // display the menu options and handle the selected option
+        while (true)
+        {
+            MenuOption option = DisplayMenu();
+            HandleMenuOption(option);
+        }
+    }
+
+    // Character Creation Including values as in order [CHP, MHP, AP, Defense, Stamina]
+    static Class CreateCharacter()
     {
         Console.WriteLine("Choose a class:");
         Console.WriteLine("1. Druid");
@@ -175,49 +199,163 @@ namespace Hazy_s_Adventure
                 return new Mage("Mage", 25, 25, 8, 15, 26, 100);
             case "5":
                 return new Priest("Priest", 25, 25, 10, 15, 23, 100);
+            case "6":
+                return new Flee("Flee", 30, 30, 5, 20, 12, 100);
+            default:
+                Console.WriteLine("Invalid choice. Please choose a valid class.");
+                return CreateCharacter();
         }
     }
-        // Give the character some equipment
-        //TODO add different starter equipment depending on class
-        character.EquipWeapon(new Weapon("Rusty Sword", 2));
-        character.EquipArmor(new Armor("Loin Cloth", 1));
 
-        return character;
-    }
-static void Console_CancelKeyPress(object sender, ConsoleCancelEventArgs e)
-{
-    // Check if the Tab key was pressed
-    if (e.SpecialKey == ConsoleSpecialKey.Tab)
+    static void Console_CancelKeyPress(object sender, ConsoleCancelEventArgs e)
     {
-        // Display the menu options and wait for the player to choose an option
-        MenuOption option = DisplayMenu();
-        // Handle the selected option
-        HandleMenuOption(option);
-        // Prevent the default behavior (i.e., exit the program)
-        e.Cancel = true;
+        // clear the console and display the menu options
+        Console.Clear();
+        DisplayMenu();
+    }
+
+    static MenuOption DisplayMenu()
+    {
+        // display the menu options
+        Console.WriteLine("Select an option:");
+        Console.WriteLine("1. Attack");
+        Console.WriteLine("2. Defend");
+        Console.WriteLine("3. Use item");
+        Console.WriteLine("4. Flee");
+
+        // get the user's input
+        string input = Console.ReadLine();
+
+        // return the selected option
+        switch (input)
+        {
+            case "1":
+                return MenuOption.Attack;
+            case "2":
+                return MenuOption.Defend;
+            case "3":
+                return MenuOption.UseItem;
+            case "4":
+                return MenuOption.Flee;
+            default:
+                Console.WriteLine("Invalid option. Please select a valid option.");
+                return DisplayMenu();
+        }
+    }
+
+    static void HandleMenuOption(MenuOption option)
+    {
+        // handle the selected menu option
+        switch (option)
+        {
+            case MenuOption.Attack:
+            Console.WriteLine("You attack the enemy!");
+            break;
+            case MenuOption.Heal:
+            Console.WriteLine("You heal yourself.");
+            break;
+            case MenuOption.Defend:
+            Console.WriteLine("You defend against the enemy's attack.");
+            break;
+            case MenuOption.Flee:
+            Console.WriteLine("You try to flee from the battle.");
+            break;
+            default:
+            Console.WriteLine("Invalid menu option.");
+            break;
     }
 }
-static MenuOption DisplayMenu()
-{
-    Console.WriteLine("Menu Options:");
-    Console.WriteLine("1. Inventory");
-    Console.WriteLine("2. Stats");
-    Console.WriteLine("3. Equipment");
-    Console.WriteLine("Choose an option:");
 
-    ConsoleKeyInfo input = Console.ReadKey(true);
-    switch (input.KeyChar)
-    {
-        case '1':
-            return MenuOption.Inventory;
-        case '2':
-            return MenuOption.Stats;
-        case '3':
-            return MenuOption.Equipment;
-        default:
-            Console.WriteLine("Invalid option. Please try again.");
-            return DisplayMenu();
+        }
     }
+
+// display the menu and get the user's choice
+class Program
+{
+    enum MenuOption { Attack = 1, Defend, Heal, Flee }
+
+    static void Main()
+    {
+        while (true)
+        {
+            MenuOption option = DisplayMenu();
+            HandleMenuOption(option);
+        }
+    }
+
+    static MenuOption DisplayMenu()
+    {
+        Console.WriteLine("1. Attack");
+        Console.WriteLine("2. Defend");
+        Console.WriteLine("3. Heal");
+        Console.WriteLine("4. Flee");
+        Console.Write("Choose an option: ");
+
+        int choice = int.Parse(Console.ReadLine());
+        return (MenuOption)choice;
+    }
+
+    static void HandleMenuOption(MenuOption option)
+    {
+        switch (option)
+        {
+            case MenuOption.Attack:
+                Console.WriteLine("You attack the enemy!");
+                break;
+            case MenuOption.Defend:
+                Console.WriteLine("You defend against the enemy's attack.");
+                break;
+            case MenuOption.Heal:
+                Console.WriteLine("You heal yourself.");
+                break;
+            case MenuOption.Flee:
+                Console.WriteLine("You flee from the battle!");
+                Environment.Exit(0);
+                break;
+            default:
+                Console.WriteLine("Invalid option. Please choose again.");
+                break;
+        }
+    }
+}
+
+static void Main(string[] args)
+{
+    while (true)
+    {
+        MenuOption option = DisplayMenu();
+        HandleMenuOption(option);
+    }
+}
+
+static void HandleMenuOption(MenuOption option)
+{
+    switch (option)
+    {
+        case MenuOption.Attack:
+            // implement attack logic
+            break;
+        case MenuOption.Defend:
+            // implement defend logic
+            break;
+        case MenuOption.Rest:
+            // implement rest logic
+            break;
+        case MenuOption.Flee:
+            // implement flee logic
+            break;
+        default:
+            Console.WriteLine("Invalid option selected. Please select a valid option.");
+            break;
+    }
+}
+
+
+enum MenuOption
+{
+    Attack,
+    Defend,
+    UseItem
 }
 
 static void HandleMenuOption(MenuOption option)
@@ -1078,5 +1216,4 @@ class Item
 
         Console.ReadLine();
     }
-}
 }
