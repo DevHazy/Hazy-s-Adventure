@@ -2,8 +2,8 @@ using System;
 using System.Collections.Generic;
 
 namespace Hazy_s_Adventure
-        //Startup 
 {
+    //Startup 
     class Program
     {
         static int screenWidth = 80;
@@ -103,66 +103,93 @@ namespace Hazy_s_Adventure
                 DrawGameScreen();
             }
         }
+        }
+}
 
-        static void InitializeEnemies()
-        {
-            // World 1 enemies
-            enemies.Add(new Enemy("Goblin", 15, 15, 10, 10, false));
-            enemies.Add(new Enemy("Orc", 25, 25, 15, 15, false));
-            enemies.Add(new Enemy("Dragon", 30, 30, 25, 25, false));
+class Enemy
+{
+    public string Name { get; private set; }
+    public int MaxHP { get; private set; }
+    public int CurrentHP { get; set; }
+    public int Attack { get; private set; }
+    public int Defense { get; private set; }
+    public bool IsBoss { get; private set; }
 
-            // World 1 boss
-            enemies.Add(new Boss("Chupacabra", 72, 72, 30, 30, true));
-
-            // World 2 Enemies
-            enemies.Add(new Enemy("Manticore", 50, 50, 35, 35, false));
-            enemies.Add(new Enemy("Vampire", 55, 55, 35, 35, false));
-            enemies.Add(new Enemy("Bat", 40, 40, 35, 35, false));
-            enemies.Add(new Enemy("Ghoul", 35, 35, 35, 35, false));
-            enemies.Add(new Enemy("Giant Rat", 40, 40, 35, 35, false));
-
-            // World 2 boss
-
-            enemies.Add(new Boss("Baron Haze, the dank", 100, 100, 45, 45, true));
-
-            // World 3 Enemies
-            enemies.Add(new Enemy("Mummy", 45, 45, 40, 40, false));
-            enemies.Add(new Enemy("Wraith", 60, 60, 45, 45, false));
-            enemies.Add(new Enemy("Unholy Priest", 35, 35, 35, 25, false));
-            enemies.Add(new Enemy("Specter", 55, 55, 40, 40, false));
-            enemies.Add(new Enemy("Ghost", 45, 45, 45, 45, false));
-
-            // World 3 boss
-            enemies.Add(new Boss("Bloody Death Knight", 140, 140, 65, 65, true));
-
-            // World 4 enemies
-            enemies.Add(new Enemy("Minotaur", 80, 80, 55, 60, false));
-            enemies.Add(new Enemy("Chimaera", 82, 82, 48, 48, false));
-            enemies.Add(new Enemy("Hydra", 100, 100, 60, 72, false));
-            enemies.Add(new Enemy("Blood Dragon", 100, 100, 68, 72, false));
-            enemies.Add(new Enemy("Demon Summoner", 80, 80, 60, 60, false));
-
-            // World 4 boss
-            enemies.Add(new Boss("Rishnok the Demon Lord", 220, 220, 70, 85, true));
-
+    public Enemy(string name, int maxHP, int attack, int defense, bool isBoss)
+    {
+        Name = name;
+        MaxHP = maxHP;
+        CurrentHP = maxHP;
+        Attack = attack;
+        Defense = defense;
+        IsBoss = isBoss;
     }
 }
 
+    class Boss : Enemy
+    {
+    public Boss(string name, int maxHP, int attack, int defense) : base(name, maxHP, attack, defense, true) { }
+    }
+
 class MainClass
+{
+    static List<Enemy> enemies = new List<Enemy>();
+
+    static void InitializeEnemies()
+    {
+        // World 1 enemies
+        enemies.Add(new Enemy("Goblin", 15, 10, 10, false));
+        enemies.Add(new Enemy("Orc", 25, 15, 15, false));
+        enemies.Add(new Enemy("Dragon", 30, 25, 25, false));
+
+        // World 1 boss
+        enemies.Add(new Boss("Chupacabra", 72, 30, 30));
+
+        // World 2 Enemies
+        enemies.Add(new Enemy("Manticore", 50, 35, 35, false));
+        enemies.Add(new Enemy("Vampire", 55, 35, 35, false));
+        enemies.Add(new Enemy("Bat", 40, 35, 35, false));
+        enemies.Add(new Enemy("Ghoul", 35, 35, 35, false));
+        enemies.Add(new Enemy("Giant Rat", 40, 35, 35, false));
+
+        // World 2 boss
+        enemies.Add(new Boss("Baron Haze, the dank", 100, 45, 45));
+
+        // World 3 Enemies
+        enemies.Add(new Enemy("Mummy", 45, 40, 40, false));
+        enemies.Add(new Enemy("Wraith", 60, 45, 45, false));
+        enemies.Add(new Enemy("Unholy Priest", 35, 35, 25, false));
+        enemies.Add(new Enemy("Specter", 55, 40, 40, false));
+        enemies.Add(new Enemy("Ghost", 45, 45, 45, false));
+
+        // World 3 boss
+        enemies.Add(new Boss("Bloody Death Knight", 140, 65, 65));
+
+        // World 4 enemies
+        enemies.Add(new Enemy("Minotaur", 80, 55, 60, false));
+        enemies.Add(new Enemy("Chimaera", 82, 82, 48, 48, false));
+        enemies.Add(new Enemy("Hydra", 100, 100, 60, 72, false));
+        enemies.Add(new Enemy("Blood Dragon", 100, 100, 68, 72, false));
+        enemies.Add(new Enemy("Demon Summoner", 80, 80, 60, 60, false));
+
+        // World 4 boss
+        enemies.Add(new Boss("Rishnok the Demon Lord", 220, 220, 70, 85));
+
+    }
+
+}
+class Program
 {
     static void Main()
     {
-        Class playerClass = CreateCharacter();
-        Console.WriteLine("You have created a " + playerClass.Name + ".");
-
-        // create a new character
-        Class character = CreateCharacter();
+        Character player = CreateCharacter();
+        Console.WriteLine("You have created a " + player.Class.Name + " named " + player.Name + ".");
 
         // create a new weapon
         Weapon rustySword = new Weapon("Rusty Sword", 2);
 
         // equip the weapon to the character
-        character.EquipWeapon(rustySword);
+        player.EquipWeapon(rustySword);
 
         // listen for the Tab key to display the menu
         Console.CancelKeyPress += new ConsoleCancelEventHandler(Console_CancelKeyPress);
@@ -171,12 +198,15 @@ class MainClass
         while (true)
         {
             MenuOption option = DisplayMenu();
-            HandleMenuOption(option);
+            HandleMenuOption(option, player);
         }
     }
+}
 
+class MainClass
+{
     // Character Creation Including values as in order [CHP, MHP, AP, Defense, Stamina]
-    static Class CreateCharacter()
+    static Character CreateCharacter()
     {
         Console.WriteLine("Choose a class:");
         Console.WriteLine("1. Druid");
@@ -190,82 +220,95 @@ class MainClass
         switch (input)
         {
             case "1":
-                return new Druid("Druid", 30, 30, 15, 20, 25, 100);
+                return new Character(new Druid("Druid", 30, 30, 15, 20, 25, 100));
             case "2":
-                return new Warrior("Warrior", 30, 30, 23, 20, 10, 100);
+                return new Character(new Warrior("Warrior", 30, 30, 23, 20, 10, 100));
             case "3":
-                return new Rogue("Rogue", 30, 30, 20, 20, 12, 100);
+                return new Character(new Rogue("Rogue", 30, 30, 20, 20, 12, 100));
             case "4":
-                return new Mage("Mage", 25, 25, 8, 15, 26, 100);
+                return new Character(new Mage("Mage", 25, 25, 8, 15, 26, 100));
             case "5":
-                return new Priest("Priest", 25, 25, 10, 15, 23, 100);
+                return new Character(new Priest("Priest", 25, 25, 10, 15, 23, 100));
             default:
                 Console.WriteLine("Invalid choice. Please choose a valid class.");
                 return CreateCharacter();
         }
     }
+}
 
-    static void Console_CancelKeyPress(object sender, ConsoleCancelEventArgs e)
+// Display the menu options and get user input
+static MenuOption DisplayMenu()
+{
+    Console.WriteLine("Choose an action:");
+    Console.WriteLine("1. Attack");
+    Console.WriteLine("2. Defend");
+    Console.WriteLine("3. Use Item");
+    Console.WriteLine("4. Flee");
+
+    string input = Console.ReadLine();
+    switch (input)
     {
-        // clear the console and display the menu options
-        Console.Clear();
-        DisplayMenu();
+        case "1":
+            return MenuOption.Attack;
+        case "2":
+            return MenuOption.Defend;
+        case "3":
+            return MenuOption.UseItem;
+        case "4":
+            return MenuOption.None;
+        default:
+            Console.WriteLine("Invalid choice. Please choose a valid option.");
+            return DisplayMenu();
     }
+}
 
-    static MenuOption DisplayMenu()
+// Handle the selected menu option
+static void HandleMenuOption(MenuOption option, Character player)
+{
+    switch (option)
     {
-        // display the menu options
-        Console.WriteLine("Select an option:");
-        Console.WriteLine("1. Attack");
-        Console.WriteLine("2. Defend");
-        Console.WriteLine("3. Use item");
-        Console.WriteLine("4. Flee");
-
-        // get the user's input
-        string input = Console.ReadLine();
-
-        // return the selected option
-        switch (input)
-        {
-            case "1":
-                return MenuOption.Attack;
-            case "2":
-                return MenuOption.Defend;
-            case "3":
-                return MenuOption.UseItem;
-            case "4":
-                return MenuOption.Flee;
-            default:
-                Console.WriteLine("Invalid option. Please select a valid option.");
-                return DisplayMenu();
-        }
-    }
-
-    static void HandleMenuOption(MenuOption option)
-    {
-        // handle the selected menu option
-        switch (option)
-        {
-            case MenuOption.Attack:
-            Console.WriteLine("You attack the enemy!");
+        case MenuOption.Attack:
+            player.Attack();
             break;
-            case MenuOption.Heal:
-            Console.WriteLine("You heal yourself.");
+        case MenuOption.Defend:
+            player.Defend();
             break;
-            case MenuOption.Defend:
-            Console.WriteLine("You defend against the enemy's attack.");
+        case MenuOption.UseItem:
+            player.UseItem();
             break;
-            case MenuOption.Flee:
-            Console.WriteLine("You try to flee from the battle.");
+        case MenuOption.None:
+            Environment.Exit(0);
             break;
-            default:
-            Console.WriteLine("Invalid menu option.");
+        default:
+            Console.WriteLine("Invalid option.");
             break;
     }
 }
 
-        }
+// Handle the Tab key to display the menu
+static void Console_CancelKeyPress(object sender, ConsoleCancelEventArgs e)
+{
+    e.Cancel = true;
+    DisplayMenu();
+}
+
+static void Main(string[] args)
+{
+    // initialize the player and enemy
+    Character player = new Character("Player", 100, 10);
+    Character enemy = new Character("Enemy", 50, 5);
+
+    // set up the CancelKeyPress event handler
+    Console.CancelKeyPress += Console_CancelKeyPress;
+
+    // main game loop
+    while (true)
+    {
+        // display the menu and handle the selected option
+        MenuOption option = DisplayMenu();
+        HandleMenuOption(option, player);
     }
+}
 
 // display the menu and get the user's choice
 class Program
@@ -468,54 +511,57 @@ class Character
                         break;
                 }
             }
+}
+        // Enemy turn
+        Console.WriteLine();
+        Console.WriteLine($"{enemy.GetName()}'s turn:");
+        enemy.PrintStats();
+        enemy.Ability1(player);
 
-            // Enemy turn
-            Console.WriteLine();
-            Console.WriteLine(enemy.GetName() + "'s turn:");
-            enemy.PrintStats();
-            enemy.Ability1(player);
+        // Regenerate stamina for both player and enemy
+        player.RegenerateStamina();
+        enemy.RegenerateStamina();
 
-            // Regenerate stamina for both player and enemy if i implement the enemy stam
-            player.RegenerateStamina();
-            enemy.RegenerateStamina();
+        // Check if enemy is defeated
+        if (enemies[currentEnemyIndex].GetCurrentHealth() == 0)
+        {
+        Console.WriteLine($"{enemies[currentEnemyIndex].GetName()} has been defeated!");
+        player.GainExperience(enemies[currentEnemyIndex].GetExperience());
+        currentEnemyIndex++;
 
-            // Check if enemy is defeated
-            if (enemies[currentEnemyIndex].GetCurrentHealth() == 0)
-            {
-                Console.WriteLine(enemies[currentEnemyIndex].GetName() + " has been defeated!");
-                player.GainExperience(enemies[currentEnemyIndex].GetExperience());
-                currentEnemyIndex++;
-                if (currentEnemyIndex == enemies.Length)
-                
-            // Print the winner
-            if (player.GetCurrentHealth() > 0)
-            {
-            Console.WriteLine(player.GetName() + " wins!");
-            }
-            else
-            {
-            Console.WriteLine(enemy.GetName() + "Has defeated you! Time to git gud scrub!");
+        // Check if all enemies are defeated
+        if (currentEnemyIndex == enemies.Length)
+        {
+            Console.WriteLine($"{player.GetName()} wins!");
+            Console.ReadLine();
+            return;
+        }
         }
 
+        // Check if player is defeated
+        if (player.GetCurrentHealth() == 0)
+        {
+        Console.WriteLine($"{enemy.GetName()} has defeated you! Time to git gud scrub!");
         Console.ReadLine();
-
-            // Enemy turn while checking if player health = 0, if not regen stam 
-            if (!gameOver)
-            {
-                enemies[currentEnemyIndex].UseAbility1(player);
-                if (player.GetCurrentHealth() == 0)
-                {
-                    Console.WriteLine("You have been defeated!");
-                    gameOver = true;
-                }
-            }
-
-            // Regenerate stamina
-            player.RegenerateStamina();
+        return;
         }
 
-        Console.WriteLine("Game over!");
-    }
+        // Enemy turn while checking if player health = 0, if not regen stam
+        if (!gameOver)
+        {
+        enemies[currentEnemyIndex].UseAbility1(player);
+        if (player.GetCurrentHealth() == 0)
+        {
+        Console.WriteLine($"{enemy.GetName()} has defeated you! Time to git gud scrub!");
+        Console.ReadLine();
+        return;
+        }
+}
+
+// Regenerate stamina
+player.RegenerateStamina();
+
+Console.WriteLine("Game over!");
         //Item selections
         //TODO add more stuffs
     static void UseItem(Character character)
